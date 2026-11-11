@@ -2,10 +2,25 @@
   "site": {
     "description": "Бесплатный офлайн-менеджер паролей для баз KeePass (KDBX) на Android и ПК."
   },
+  "a11y": {
+    "skip": "К содержимому"
+  },
   "nav": {
+    "label": "Основная",
+    "home": "KDBX Vault - на главную",
     "menu": "Меню",
     "close": "Закрыть",
-    "github": "GitHub"
+    "github": "GitHub",
+    "download": "Скачать",
+    "screenshots": "Скриншоты",
+    "releases": "Релизы",
+    "donate": "Донаты"
+  },
+  "footer": {
+    "label": "Подвал",
+    "privacy": "Политика конфиденциальности",
+    "terms": "Условия использования",
+    "source": "Исходный код"
   },
   "locale": {
     "label": "Язык"

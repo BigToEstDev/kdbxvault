@@ -1,0 +1,54 @@
+---
+/**
+ * The footer of every page - a template: the logo and a line about the app, the links (policy, terms, source), the
+ * year and the name. Grows with the sections of the site.
+ */
+import { Icon } from 'astro-icon/components';
+import { SITE } from '../../config/site';
+import { FOOTER_NAV, ROUTES } from '../../config/nav';
+import { i18nAttrs } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+import Logo from '../brand/Logo.astro';
+import Container from '../ui/Container.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-outline/15 bg-surface-container-low/60 backdrop-blur-sm">
+  <Container class="flex flex-col gap-10 py-12">
+    <div class="flex flex-col justify-between gap-8 md:flex-row">
+      <div class="flex max-w-sm flex-col gap-3">
+        <a
+          href={ROUTES.home}
+          class="self-start rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+          {...i18nAttrs({ 'aria-label': 'nav.home' })}
+        >
+          <Logo withName />
+        </a>
+        <p class="text-sm text-on-surface-variant">
+          <T k="site.description" />
+        </p>
+      </div>
+
+      <nav {...i18nAttrs({ 'aria-label': 'footer.label' })}>
+        <ul class="flex flex-col gap-2">
+          {FOOTER_NAV.map(({ href, label, icon }) => (
+            <li>
+              <a
+                href={href}
+                class="inline-flex items-center gap-2 rounded-sm text-sm text-on-surface-variant transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                <Icon name={icon} class="size-4" aria-hidden="true" />
+                <T k={label} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+
+    <p class="border-t border-outline/15 pt-6 text-xs text-on-surface-variant">
+      © {year} <span translate="no">{SITE.name}</span>
+    </p>
+  </Container>
+</footer>

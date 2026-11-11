@@ -1,0 +1,59 @@
+---
+/**
+ * The choice of the theme: an icon button and a popup - as in the system, light, dark. The chosen one is checked; a
+ * choice is applied at once and kept (src/scripts/theme.ts). `id` - unique on the page: the switcher is in the top
+ * bar and in the drawer.
+ */
+import { ICONS } from '../../config/nav';
+import type { MessageKey } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+import type { Theme } from '../../scripts/theme';
+import IconButton from '../ui/IconButton.astro';
+import MenuItem from '../ui/MenuItem.astro';
+import Popover from '../ui/Popover.astro';
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+const panelId = `${id}-panel`;
+
+const OPTIONS: readonly { theme: Theme; label: MessageKey; icon: string }[] = [
+  { theme: 'system', label: 'theme.system', icon: ICONS.themeSystem },
+  { theme: 'light', label: 'theme.light', icon: ICONS.themeLight },
+  { theme: 'dark', label: 'theme.dark', icon: ICONS.themeDark },
+];
+---
+
+<IconButton icon={ICONS.theme} label="theme.label" popovertarget={panelId} />
+<Popover id={panelId}>
+  {OPTIONS.map(({ theme, label, icon }) => (
+    <MenuItem checkable icon={icon} data-theme-option={theme}>
+      <T k={label} />
+    </MenuItem>
+  ))}
+</Popover>
+
+<script>
+  import { readTheme, setTheme, THEMES, type Theme } from '../../scripts/theme';
+
+  const options = document.querySelectorAll<HTMLElement>('[data-theme-option]');
+
+  function mark(theme: Theme): void {
+    for (const option of options) {
+      option.setAttribute('aria-pressed', String(option.dataset.themeOption === theme));
+    }
+  }
+
+  for (const option of options) {
+    option.addEventListener('click', () => {
+      const theme = THEMES.find((value) => value === option.dataset.themeOption) ?? 'system';
+      setTheme(theme);
+      mark(theme);
+      option.closest<HTMLElement>('[popover]')?.hidePopover();
+    });
+  }
+
+  mark(readTheme());
+</script>

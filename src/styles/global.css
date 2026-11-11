@@ -59,6 +59,17 @@
     color-scheme: dark;
   }
 
+  /* The anchors (#download, #github) are not hidden under the sticky top bar */
+  html {
+    scroll-padding-top: 5rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
   body {
     @apply min-h-dvh bg-background text-on-background antialiased;
   }

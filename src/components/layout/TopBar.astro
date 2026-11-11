@@ -1,0 +1,92 @@
+---
+/**
+ * The top bar of every page: fixed on top, glass over the backdrop.
+ * Desktop (lg and wider): the logo with the name - the pages in the center - language, theme, GitHub, «Download».
+ * Mobile: the logo - «Download» (icon) and the menu button; the drawer holds the pages, GitHub, language and theme.
+ */
+import { ICONS, MAIN_NAV, ROUTES } from '../../config/nav';
+import { i18nAttrs } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+import Logo from '../brand/Logo.astro';
+import LocaleSwitcher from '../controls/LocaleSwitcher.astro';
+import ThemeSwitcher from '../controls/ThemeSwitcher.astro';
+import Button from '../ui/Button.astro';
+import Container from '../ui/Container.astro';
+import Drawer from '../ui/Drawer.astro';
+import IconButton from '../ui/IconButton.astro';
+import NavLink from '../ui/NavLink.astro';
+import { Icon } from 'astro-icon/components';
+
+const DRAWER_ID = 'nav-drawer';
+---
+
+<header class="sticky top-0 z-40 border-b border-outline/15 bg-surface/70 backdrop-blur-xl backdrop-saturate-150">
+  <Container class="flex h-16 items-center justify-between gap-4">
+    <a
+      href={ROUTES.home}
+      class="rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+      {...i18nAttrs({ 'aria-label': 'nav.home' })}
+    >
+      <Logo withName />
+    </a>
+
+    <nav class="hidden items-center gap-1 lg:flex" {...i18nAttrs({ 'aria-label': 'nav.label' })}>
+      {MAIN_NAV.map(({ href, label }) => (
+        <NavLink href={href}>
+          <T k={label} />
+        </NavLink>
+      ))}
+    </nav>
+
+    <div class="hidden items-center gap-1 lg:flex">
+      <LocaleSwitcher id="bar-locale" />
+      <ThemeSwitcher id="bar-theme" />
+      <IconButton icon={ICONS.github} label="nav.github" href={ROUTES.github} />
+      <Button href={ROUTES.download} icon={ICONS.download} class="ml-2">
+        <T k="nav.download" />
+      </Button>
+    </div>
+
+    <div class="flex items-center gap-1 lg:hidden">
+      <IconButton
+        icon={ICONS.download}
+        label="nav.download"
+        href={ROUTES.download}
+        variant="filled"
+      />
+      <IconButton icon={ICONS.menu} label="nav.menu" data-drawer-open={DRAWER_ID} />
+    </div>
+  </Container>
+</header>
+
+<Drawer id={DRAWER_ID} label="nav.menu">
+  <div class="flex h-full flex-col gap-6 p-4">
+    <div class="flex items-center justify-between">
+      <Logo />
+      <IconButton icon={ICONS.close} label="nav.close" data-drawer-close />
+    </div>
+
+    <nav class="flex flex-col gap-1" {...i18nAttrs({ 'aria-label': 'nav.label' })}>
+      {MAIN_NAV.map(({ href, label, icon }) => (
+        <NavLink href={href} block data-drawer-close>
+          <Icon name={icon} class="size-5" aria-hidden="true" />
+          <T k={label} />
+        </NavLink>
+      ))}
+      <NavLink href={ROUTES.github} block data-drawer-close>
+        <Icon name={ICONS.github} class="size-5" aria-hidden="true" />
+        <T k="nav.github" />
+      </NavLink>
+    </nav>
+
+    <div class="mt-auto flex flex-col gap-4">
+      <div class="flex items-center gap-1 border-t border-outline/15 pt-4">
+        <LocaleSwitcher id="drawer-locale" />
+        <ThemeSwitcher id="drawer-theme" />
+      </div>
+      <Button href={ROUTES.download} icon={ICONS.download} class="w-full" data-drawer-close>
+        <T k="nav.download" />
+      </Button>
+    </div>
+  </div>
+</Drawer>
