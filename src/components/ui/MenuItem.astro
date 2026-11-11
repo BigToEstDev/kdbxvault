@@ -1,0 +1,41 @@
+---
+/**
+ * A row of a popup or a drawer menu - a <button>. With `checkable` it shows a check when chosen
+ * (`aria-pressed="true"` - set by the script of the menu). Leading icon - optional; the text - the slot.
+ */
+import type { HTMLAttributes } from 'astro/types';
+import { Icon } from 'astro-icon/components';
+
+type Props = Omit<HTMLAttributes<'button'>, 'class'> & {
+  icon?: string;
+  checkable?: boolean;
+  class?: string;
+};
+
+const { icon, checkable = false, class: className, ...rest } = Astro.props;
+---
+
+<button
+  type="button"
+  aria-pressed={checkable ? 'false' : undefined}
+  class:list={[
+    'group flex w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-left text-sm text-on-surface',
+    'transition-colors duration-150 hover:bg-on-surface/8',
+    'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary',
+    'aria-pressed:text-primary',
+    className,
+  ]}
+  {...rest}
+>
+  {icon && <Icon name={icon} class="size-5 shrink-0" aria-hidden="true" />}
+  <span class="flex-1">
+    <slot />
+  </span>
+  {checkable && (
+    <Icon
+      name="material-symbols:check-rounded"
+      class="invisible size-5 shrink-0 group-aria-pressed:visible"
+      aria-hidden="true"
+    />
+  )}
+</button>

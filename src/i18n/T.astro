@@ -1,0 +1,19 @@
+---
+/**
+ * A text in every language of the site: a span per language, the current one shown by CSS (LocaleInit). In the
+ * markup - only keys of the dictionaries, never the strings themselves.
+ */
+import { LOCALES, t, type MessageKey } from './locales';
+
+interface Props {
+  k: MessageKey;
+}
+
+const { k } = Astro.props;
+---
+
+{LOCALES.map(({ code }) => (
+  <span lang={code} data-i18n-lang={code}>
+    {t(code, k)}
+  </span>
+))}

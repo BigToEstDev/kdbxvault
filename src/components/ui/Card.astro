@@ -1,0 +1,24 @@
+---
+/**
+ * A panel on the backdrop: the container color a little transparent, a hairline border, the large shape of the app.
+ * Other attributes go to the element (`id` for an anchor).
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = Omit<HTMLAttributes<'section'>, 'class'> & {
+  as?: 'section' | 'div' | 'article';
+  class?: string;
+};
+
+const { as: Tag = 'div', class: className, ...rest } = Astro.props;
+---
+
+<Tag
+  class:list={[
+    'rounded-lg border border-outline/15 bg-surface-container-low/80 p-6 shadow-sm backdrop-blur-sm sm:p-8',
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</Tag>

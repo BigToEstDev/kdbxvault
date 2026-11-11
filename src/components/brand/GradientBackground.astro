@@ -1,0 +1,30 @@
+---
+/**
+ * The backdrop of every page - the one of the app (pass-app, core-pres: ui/components/GradientBackground.kt): the
+ * background color, two soft glows in opposite corners (primary 25 % - top right, tertiary 15 % - bottom left, radius
+ * 0.9 of the shorter side) and a few faint outline shapes. Decoration only: fixed behind the content, takes no input.
+ */
+---
+
+<div class="backdrop pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
+  <div class="absolute top-[10%] left-[calc(92%-5rem)] size-20 rotate-12 rounded-2xl border border-on-background/8"></div>
+  <div class="absolute top-[calc(88%-4rem)] left-[8%] size-16 rounded-full border border-on-background/8"></div>
+  <div class="absolute top-[calc(22%-0.75rem)] left-[calc(18%-0.75rem)] size-6 rounded-full border border-on-background/8"></div>
+</div>
+
+<style>
+  .backdrop {
+    background:
+      radial-gradient(
+        circle 90vmin at 105% -2%,
+        color-mix(in oklab, var(--color-primary) 25%, transparent),
+        transparent
+      ),
+      radial-gradient(
+        circle 90vmin at -5% 102%,
+        color-mix(in oklab, var(--color-tertiary) 15%, transparent),
+        transparent
+      ),
+      var(--color-background);
+  }
+</style>

@@ -1,0 +1,22 @@
+---
+/** The heading of a page: an icon in a tonal circle and the title - a key of the dictionaries. */
+import { Icon } from 'astro-icon/components';
+import type { MessageKey } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+
+interface Props {
+  title: MessageKey;
+  icon: string;
+}
+
+const { title, icon } = Astro.props;
+---
+
+<div class="flex items-center gap-4">
+  <span class="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-primary-container text-on-primary-container">
+    <Icon name={icon} class="size-6" aria-hidden="true" />
+  </span>
+  <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+    <T k={title} />
+  </h1>
+</div>

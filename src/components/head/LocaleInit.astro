@@ -1,0 +1,35 @@
+---
+/**
+ * The language before the first paint - inline in <head>: `data-lang` and `lang` on <html>, so only the texts of
+ * that language are shown from the start (no flash, no blank screen). The rule of the choice - src/scripts/locale.ts
+ * (readLocale): the same order here. The CSS that hides the other languages comes with it. After load the module
+ * script swaps what CSS cannot - the attributes and the title.
+ */
+import { DEFAULT_LOCALE, LOCALE_CODES, LOCALE_CSS, LOCALE_STORAGE_KEY } from '../../i18n/locales';
+
+const init = `(() => {
+  const codes = ${JSON.stringify(LOCALE_CODES)};
+  let locale = ${JSON.stringify(DEFAULT_LOCALE)};
+  let stored = null;
+  try { stored = localStorage.getItem(${JSON.stringify(LOCALE_STORAGE_KEY)}); } catch {}
+  if (codes.includes(stored)) {
+    locale = stored;
+  } else {
+    const found = navigator.languages
+      .map((tag) => tag.toLowerCase().split('-')[0])
+      .find((code) => codes.includes(code));
+    if (found) locale = found;
+  }
+  document.documentElement.dataset.lang = locale;
+  document.documentElement.lang = locale;
+})();`;
+---
+
+<script is:inline set:html={init} />
+<Fragment set:html={`<style>${LOCALE_CSS}</style>`} />
+
+<script>
+  import { applyLocale, readLocale } from '../../scripts/locale';
+
+  applyLocale(readLocale());
+</script>

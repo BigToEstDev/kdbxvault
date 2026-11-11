@@ -1,0 +1,45 @@
+---
+/**
+ * A button - a <button>, or with `href` a link that looks like one. Leading / trailing icon - names of the
+ * icon sets (`material-symbols:download`). The text - the slot.
+ */
+import type { HTMLAttributes } from 'astro/types';
+import { Icon } from 'astro-icon/components';
+import { buttonClasses, type ButtonSize, type ButtonVariant } from './button-styles';
+
+type Props = Omit<HTMLAttributes<'button'>, 'class'> & {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  href?: string;
+  icon?: string;
+  iconEnd?: string;
+  class?: string;
+};
+
+const {
+  variant = 'filled',
+  size = 'md',
+  href,
+  icon,
+  iconEnd,
+  class: className,
+  type = 'button',
+  ...rest
+} = Astro.props;
+
+const classes = [buttonClasses(variant, size), className];
+---
+
+{href ? (
+  <a href={href} class:list={classes} {...(rest as HTMLAttributes<'a'>)}>
+    {icon && <Icon name={icon} class="size-5" aria-hidden="true" />}
+    <slot />
+    {iconEnd && <Icon name={iconEnd} class="size-5" aria-hidden="true" />}
+  </a>
+) : (
+  <button type={type} class:list={classes} {...rest}>
+    {icon && <Icon name={icon} class="size-5" aria-hidden="true" />}
+    <slot />
+    {iconEnd && <Icon name={iconEnd} class="size-5" aria-hidden="true" />}
+  </button>
+)}

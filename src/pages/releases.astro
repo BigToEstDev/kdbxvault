@@ -1,0 +1,11 @@
+---
+import PagePlaceholder from '../components/sections/PagePlaceholder.astro';
+import { navItem, ROUTES } from '../config/nav';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const { label, icon } = navItem(ROUTES.releases);
+---
+
+<BaseLayout title={label}>
+  <PagePlaceholder title={label} icon={icon} />
+</BaseLayout>

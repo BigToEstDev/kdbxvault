@@ -1,0 +1,90 @@
+---
+/**
+ * A popup panel on the native Popover API: opened by any button with `popovertarget={id}` (the browser wires
+ * `aria-expanded`, Esc and a click outside). It is placed under that button: `align` - by its start or end edge;
+ * kept inside the window. The content - the slot.
+ */
+interface Props {
+  id: string;
+  align?: 'start' | 'end';
+  class?: string;
+}
+
+const { id, align = 'end', class: className } = Astro.props;
+---
+
+<div
+  id={id}
+  popover="auto"
+  data-popover
+  data-align={align}
+  class:list={[
+    'popover m-0 min-w-44 rounded-lg border border-outline/20 bg-surface-container p-1 text-on-surface shadow-xl',
+    className,
+  ]}
+>
+  <slot />
+</div>
+
+<style>
+  .popover {
+    position: fixed;
+    inset: auto;
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+    transition:
+      opacity 120ms ease-out,
+      transform 120ms ease-out,
+      overlay 120ms allow-discrete,
+      display 120ms allow-discrete;
+  }
+
+  .popover:popover-open {
+    opacity: 1;
+    transform: none;
+  }
+
+  @starting-style {
+    .popover:popover-open {
+      opacity: 0;
+      transform: translateY(-4px) scale(0.98);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .popover {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const GAP = 8;
+  const EDGE = 8;
+
+  function place(panel: HTMLElement, trigger: HTMLElement): void {
+    const anchor = trigger.getBoundingClientRect();
+    const width = panel.offsetWidth;
+    const start = panel.dataset.align === 'start' ? anchor.left : anchor.right - width;
+    const left = Math.min(Math.max(start, EDGE), window.innerWidth - width - EDGE);
+    panel.style.left = `${left}px`;
+    panel.style.top = `${anchor.bottom + GAP}px`;
+  }
+
+  for (const panel of document.querySelectorAll<HTMLElement>('[data-popover]')) {
+    const trigger = document.querySelector<HTMLElement>(`[popovertarget="${panel.id}"]`);
+    if (!trigger) continue;
+    const follow = () => place(panel, trigger);
+
+    panel.addEventListener('toggle', (event) => {
+      if ((event as ToggleEvent).newState === 'open') {
+        follow();
+        window.addEventListener('resize', follow, { passive: true });
+        window.addEventListener('scroll', follow, { passive: true });
+      } else {
+        window.removeEventListener('resize', follow);
+        window.removeEventListener('scroll', follow);
+      }
+    });
+  }
+</script>

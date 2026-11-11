@@ -1,17 +1,52 @@
 ---
-import '../styles/global.css';
+/*
+ * The home page: for now - the name of the app and the panels the top bar leads to (#download, #github).
+ * The content of the sections comes in the next steps.
+ */
+import Logo from '../components/brand/Logo.astro';
+import Card from '../components/ui/Card.astro';
+import Container from '../components/ui/Container.astro';
+import { ICONS } from '../config/nav';
+import { SITE } from '../config/site';
+import T from '../i18n/T.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+import type { MessageKey } from '../i18n/locales';
+
+const PANELS: readonly { id: string; title: MessageKey; text: MessageKey; icon: string }[] = [
+  { id: 'download', title: 'nav.download', text: 'home.download', icon: ICONS.download },
+  { id: 'github', title: 'footer.source', text: 'home.github', icon: ICONS.github },
+];
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body>
-    <h1>Astro</h1>
-  </body>
-</html>
+<BaseLayout>
+  <Container class="flex flex-col gap-12 pt-16 sm:pt-24">
+    <section class="flex flex-col items-start gap-5">
+      <Logo class="[&_svg]:size-16" />
+      <h1 class="text-4xl font-semibold tracking-tight sm:text-6xl" translate="no">
+        {SITE.name}
+      </h1>
+      <p class="max-w-2xl text-lg text-on-surface-variant sm:text-xl">
+        <T k="site.description" />
+      </p>
+    </section>
+
+    <div class="grid gap-6 md:grid-cols-2">
+      {PANELS.map(({ id, title, text, icon }) => (
+        <Card as="section" id={id} class="flex flex-col gap-3">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex size-10 items-center justify-center rounded-full bg-primary/12 text-primary">
+              <Icon name={icon} class="size-5" aria-hidden="true" />
+            </span>
+            <h2 class="text-xl font-semibold">
+              <T k={title} />
+            </h2>
+          </div>
+          <p class="text-on-surface-variant">
+            <T k={text} />
+          </p>
+        </Card>
+      ))}
+    </div>
+  </Container>
+</BaseLayout>

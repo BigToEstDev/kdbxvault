@@ -1,0 +1,24 @@
+---
+/** A page that is not made yet: its heading and a card «coming soon». One for all the empty pages. */
+import type { MessageKey } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+import Card from '../ui/Card.astro';
+import Container from '../ui/Container.astro';
+import PageHeader from './PageHeader.astro';
+
+interface Props {
+  title: MessageKey;
+  icon: string;
+}
+
+const { title, icon } = Astro.props;
+---
+
+<Container class="flex flex-col gap-8 pt-12 sm:pt-16">
+  <PageHeader title={title} icon={icon} />
+  <Card>
+    <p class="text-on-surface-variant">
+      <T k="placeholder.soon" />
+    </p>
+  </Card>
+</Container>

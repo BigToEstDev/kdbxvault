@@ -1,1 +1,109 @@
 @import 'tailwindcss';
+
+/*
+ * The palette of the app (pass-app, core-pres: ui/theme/Color.kt, Theme.kt) - the roles of Material 3.
+ * Each token holds both themes: light-dark() picks by `color-scheme` - the system one by default, a fixed one when
+ * the visitor chose ([data-theme] on <html>, src/scripts/theme.ts). Without JS the site follows the system.
+ * The default Tailwind colors are switched off: only the palette of the brand is in the markup.
+ */
+@theme {
+  --color-*: initial;
+
+  --color-primary: light-dark(#119da4, #5fd1d8);
+  --color-on-primary: light-dark(#ffffff, #00363a);
+  --color-primary-container: light-dark(#b2ebf0, #00696f);
+  --color-on-primary-container: light-dark(#00363a, #b2ebf0);
+
+  --color-secondary: light-dark(#19647e, #c7bfea);
+  --color-on-secondary: light-dark(#ffffff, #2c2350);
+  --color-secondary-container: light-dark(#b8e3f0, #4b3f72);
+  --color-on-secondary-container: light-dark(#00232d, #e9e4ff);
+
+  --color-tertiary: #ffc857;
+  --color-on-tertiary: light-dark(#1f2041, #4a3600);
+  --color-tertiary-container: light-dark(#ffe8b3, #6b5000);
+  --color-on-tertiary-container: light-dark(#4a3600, #ffe8b3);
+
+  --color-background: light-dark(#fbfbfe, #1f2041);
+  --color-on-background: light-dark(#1a1c1e, #e3e1e9);
+  --color-surface: light-dark(#fbfbfe, #1f2041);
+  --color-on-surface: light-dark(#1a1c1e, #e3e1e9);
+  --color-surface-variant: light-dark(#dde3e9, #2c2f52);
+  --color-on-surface-variant: light-dark(#41474d, #c3c6d6);
+  --color-outline: light-dark(#71787e, #8b909c);
+
+  --color-surface-container-lowest: light-dark(#ffffff, #141426);
+  --color-surface-container-low: light-dark(#f3f5f9, #202034);
+  --color-surface-container: light-dark(#edf0f5, #24243a);
+  --color-surface-container-high: light-dark(#e6eaf0, #2b2c42);
+  --color-surface-container-highest: light-dark(#dde3e9, #35354c);
+
+  --color-scrim: #000000;
+
+  /* The shapes of the app (ui/theme/Shape.kt) */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  :root[data-theme='light'] {
+    color-scheme: light;
+  }
+
+  :root[data-theme='dark'] {
+    color-scheme: dark;
+  }
+
+  /* The anchors (#download, #github) are not hidden under the sticky top bar */
+  html {
+    scroll-padding-top: 5rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    @apply min-h-dvh bg-background text-on-background antialiased;
+  }
+}
+
+/* The text of the Markdown documents (LegalDocument) */
+@layer components {
+  .doc {
+    @apply leading-relaxed text-on-surface;
+
+    & h2 {
+      @apply mt-8 mb-3 text-xl font-semibold tracking-tight first:mt-0;
+    }
+
+    & h3 {
+      @apply mt-6 mb-2 text-lg font-semibold;
+    }
+
+    & p,
+    & ul,
+    & ol {
+      @apply mb-4 text-on-surface-variant;
+    }
+
+    & ul {
+      @apply list-disc pl-6;
+    }
+
+    & ol {
+      @apply list-decimal pl-6;
+    }
+
+    & a {
+      @apply text-primary underline underline-offset-2 hover:no-underline;
+    }
+  }
+}
