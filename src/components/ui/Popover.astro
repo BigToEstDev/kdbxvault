@@ -1,8 +1,9 @@
 ---
 /**
  * A popup panel on the native Popover API: opened by any button with `popovertarget={id}` (the browser wires
- * `aria-expanded`, Esc and a click outside). It is placed under that button: `align` - by its start or end edge;
- * kept inside the window. The content - the slot.
+ * `aria-expanded`, Esc and a click outside). It is placed under that button, or above it when there is no room
+ * below and more above (the drawer: its switchers are at the bottom); fits in neither - the height is limited and the
+ * panel scrolls. `align` - by the start or end edge of the button; kept inside the window. The content - the slot.
  */
 interface Props {
   id: string;
@@ -28,15 +29,22 @@ const { id, align = 'end', class: className } = Astro.props;
 
 <style>
   .popover {
+    /* The side it comes from: from the button - down when below, up when above */
+    --rise: -4px;
     position: fixed;
     inset: auto;
+    overflow-y: auto;
     opacity: 0;
-    transform: translateY(-4px) scale(0.98);
+    transform: translateY(var(--rise)) scale(0.98);
     transition:
       opacity 120ms ease-out,
       transform 120ms ease-out,
       overlay 120ms allow-discrete,
       display 120ms allow-discrete;
+  }
+
+  .popover[data-placement='top'] {
+    --rise: 4px;
   }
 
   .popover:popover-open {
@@ -47,7 +55,7 @@ const { id, align = 'end', class: className } = Astro.props;
   @starting-style {
     .popover:popover-open {
       opacity: 0;
-      transform: translateY(-4px) scale(0.98);
+      transform: translateY(var(--rise)) scale(0.98);
     }
   }
 
@@ -64,11 +72,23 @@ const { id, align = 'end', class: className } = Astro.props;
 
   function place(panel: HTMLElement, trigger: HTMLElement): void {
     const anchor = trigger.getBoundingClientRect();
+    panel.style.maxHeight = '';
     const width = panel.offsetWidth;
+    const height = panel.offsetHeight;
+
+    // Under the button by default; above - when it does not fit below and there is more room above.
+    const below = window.innerHeight - anchor.bottom - GAP - EDGE;
+    const above = anchor.top - GAP - EDGE;
+    const up = height > below && above > below;
+    const room = Math.max(up ? above : below, 0);
+    if (height > room) panel.style.maxHeight = `${room}px`;
+    const shown = Math.min(height, room);
+
     const start = panel.dataset.align === 'start' ? anchor.left : anchor.right - width;
     const left = Math.min(Math.max(start, EDGE), window.innerWidth - width - EDGE);
+    panel.dataset.placement = up ? 'top' : 'bottom';
     panel.style.left = `${left}px`;
-    panel.style.top = `${anchor.bottom + GAP}px`;
+    panel.style.top = `${up ? anchor.top - GAP - shown : anchor.bottom + GAP}px`;
   }
 
   for (const panel of document.querySelectorAll<HTMLElement>('[data-popover]')) {
