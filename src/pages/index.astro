@@ -4,6 +4,7 @@
  * The content of the sections comes in the next steps.
  */
 import Logo from '../components/brand/Logo.astro';
+import Button from '../components/ui/Button.astro';
 import Card from '../components/ui/Card.astro';
 import Container from '../components/ui/Container.astro';
 import { ICONS } from '../config/nav';
@@ -13,9 +14,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { Icon } from 'astro-icon/components';
 import type { MessageKey } from '../i18n/locales';
 
-const PANELS: readonly { id: string; title: MessageKey; text: MessageKey; icon: string }[] = [
+interface Panel {
+  id: string;
+  title: MessageKey;
+  text: MessageKey;
+  icon: string;
+  /** A link out of the site - opens in a new tab. */
+  action?: { label: MessageKey; href: string; icon: string };
+}
+
+const PANELS: readonly Panel[] = [
   { id: 'download', title: 'nav.download', text: 'home.download', icon: ICONS.download },
-  { id: 'github', title: 'footer.source', text: 'home.github', icon: ICONS.github },
+  {
+    id: 'github',
+    title: 'footer.source',
+    text: 'home.github',
+    icon: ICONS.github,
+    action: { label: 'home.githubOpen', href: SITE.githubAppUrl, icon: ICONS.github },
+  },
 ];
 ---
 
@@ -32,7 +48,7 @@ const PANELS: readonly { id: string; title: MessageKey; text: MessageKey; icon: 
     </section>
 
     <div class="grid gap-6 md:grid-cols-2">
-      {PANELS.map(({ id, title, text, icon }) => (
+      {PANELS.map(({ id, title, text, icon, action }) => (
         <Card as="section" id={id} class="flex flex-col gap-3">
           <div class="flex items-center gap-3">
             <span class="inline-flex size-10 items-center justify-center rounded-full bg-primary/12 text-primary">
@@ -45,6 +61,18 @@ const PANELS: readonly { id: string; title: MessageKey; text: MessageKey; icon: 
           <p class="text-on-surface-variant">
             <T k={text} />
           </p>
+          {action && (
+            <Button
+              href={action.href}
+              external
+              variant="outlined"
+              icon={action.icon}
+              iconEnd={ICONS.external}
+              class="mt-2 self-start"
+            >
+              <T k={action.label} />
+            </Button>
+          )}
         </Card>
       ))}
     </div>

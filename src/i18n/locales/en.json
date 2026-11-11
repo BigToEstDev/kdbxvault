@@ -10,7 +10,8 @@
   },
   "home": {
     "download": "Installers for Android and desktop will be here.",
-    "github": "The app is open source - its repository on GitHub will be here."
+    "github": "The app is open source: the code, issues and releases are on GitHub.",
+    "githubOpen": "Open on GitHub"
   },
   "notFound": {
     "title": "Page not found",
