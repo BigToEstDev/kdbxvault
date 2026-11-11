@@ -24,10 +24,10 @@
       }
     },
     "stats": {
-      "price": "price - free forever",
-      "accounts": "accounts and sign-ups",
-      "trackers": "trackers, ads, analytics",
-      "platforms": "platforms - Android and desktop"
+      "title": "nothing extra",
+      "subscriptions": "No subscriptions or payments",
+      "accounts": "No sign-up or account",
+      "ads": "No ads or trackers"
     },
     "privacy": {
       "eyebrow": "Privacy",

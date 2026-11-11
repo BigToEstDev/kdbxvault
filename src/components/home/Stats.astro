@@ -1,58 +1,67 @@
 ---
-/** The facts in figures: big numbers and a short line under each - the free, the private, the platforms. */
-import { PLATFORMS } from '../../config/platforms';
+/**
+ * «Nothing extra»: one panel - a big 0 at the top left with its caption, under it what the zero counts - no
+ * subscriptions, no sign-up, no ads and trackers - each with a solid icon.
+ */
 import type { MessageKey } from '../../i18n/locales';
 import T from '../../i18n/T.astro';
 import Card from '../ui/Card.astro';
 import Container from '../ui/Container.astro';
 import IconBadge, { type IconTone } from '../ui/IconBadge.astro';
 
-const STATS: readonly { value: string; label: MessageKey; icon: string; tone: IconTone }[] = [
+const NONE: readonly { label: MessageKey; icon: string; tone: IconTone }[] = [
   {
-    value: '0',
-    label: 'home.stats.price',
+    label: 'home.stats.subscriptions',
     icon: 'material-symbols:money-off-rounded',
     tone: 'tertiary',
   },
   {
-    value: '0',
     label: 'home.stats.accounts',
     icon: 'material-symbols:no-accounts-outline-rounded',
     tone: 'primary',
   },
   {
-    value: '0',
-    label: 'home.stats.trackers',
+    label: 'home.stats.ads',
     icon: 'material-symbols:visibility-off-outline-rounded',
     tone: 'secondary',
-  },
-  {
-    value: String(PLATFORMS.length),
-    label: 'home.stats.platforms',
-    icon: 'material-symbols:devices-outline-rounded',
-    tone: 'success',
   },
 ];
 ---
 
 <section class="pt-20 sm:pt-28">
   <Container>
-    <ul class="grid grid-cols-2 gap-4 lg:grid-cols-4">
-      {STATS.map(({ value, label, icon, tone }, i) => (
-        <Card
-          as="li"
-          interactive
-          class="flex flex-col gap-3"
-          data-reveal
-          style={`--reveal-delay: ${i * 80}ms`}
+    <Card class="relative flex flex-col gap-8 overflow-hidden sm:p-10" data-reveal="scale">
+      <div
+        class="pointer-events-none absolute -top-20 -left-20 size-72 rounded-full bg-primary/15 blur-3xl"
+        aria-hidden="true"
+      ></div>
+
+      <div class="relative flex items-end gap-4">
+        <span
+          class="bg-linear-to-br from-primary to-secondary bg-clip-text text-8xl leading-none font-bold tracking-tighter text-transparent tabular-nums sm:text-9xl"
+          aria-hidden="true"
         >
-          <IconBadge icon={icon} tone={tone} size="sm" />
-          <span class="text-5xl font-bold tracking-tight text-primary tabular-nums">{value}</span>
-          <span class="text-sm text-on-surface-variant">
-            <T k={label} />
-          </span>
-        </Card>
-      ))}
-    </ul>
+          0
+        </span>
+        <span class="pb-2 text-xl font-semibold text-balance sm:pb-4 sm:text-2xl">
+          <T k="home.stats.title" />
+        </span>
+      </div>
+
+      <ul class="relative grid gap-4 sm:grid-cols-3">
+        {NONE.map(({ label, icon, tone }, i) => (
+          <li
+            class="flex items-center gap-4 rounded-lg bg-surface-container/70 p-4"
+            data-reveal
+            style={`--reveal-delay: ${150 + i * 100}ms`}
+          >
+            <IconBadge icon={icon} tone={tone} solid size="lg" />
+            <span class="font-medium">
+              <T k={label} />
+            </span>
+          </li>
+        ))}
+      </ul>
+    </Card>
   </Container>
 </section>

@@ -1,5 +1,8 @@
 ---
-/** An icon in a tonal circle - the mark of a card, a heading, a step of a diagram. Colors - tokens by `tone`. */
+/**
+ * An icon in a circle - the mark of a card, a heading, a step of a diagram. Colors - tokens by `tone`; `solid` - a
+ * full fill of the tone (stands out on any background), else a soft tint.
+ */
 import { Icon } from 'astro-icon/components';
 
 export type IconTone = 'primary' | 'secondary' | 'tertiary' | 'neutral' | 'error' | 'success';
@@ -7,19 +10,29 @@ export type IconTone = 'primary' | 'secondary' | 'tertiary' | 'neutral' | 'error
 interface Props {
   icon: string;
   tone?: IconTone;
+  solid?: boolean;
   size?: 'sm' | 'md' | 'lg';
   class?: string;
 }
 
-const { icon, tone = 'primary', size = 'md', class: className } = Astro.props;
+const { icon, tone = 'primary', solid = false, size = 'md', class: className } = Astro.props;
 
-const TONES: Record<IconTone, string> = {
+const SOFT: Record<IconTone, string> = {
   primary: 'bg-primary/12 text-primary',
   secondary: 'bg-secondary-container text-on-secondary-container',
   tertiary: 'bg-tertiary/20 text-on-tertiary-container',
   neutral: 'bg-on-surface/8 text-on-surface-variant',
   error: 'bg-error/12 text-error',
   success: 'bg-strength-strong/15 text-strength-strong',
+};
+
+const SOLID: Record<IconTone, string> = {
+  primary: 'bg-primary text-on-primary',
+  secondary: 'bg-secondary text-on-secondary',
+  tertiary: 'bg-tertiary text-on-tertiary',
+  neutral: 'bg-on-surface-variant text-surface',
+  error: 'bg-error text-surface',
+  success: 'bg-strength-strong text-surface',
 };
 
 const SIZES = {
@@ -32,7 +45,7 @@ const SIZES = {
 <span
   class:list={[
     'inline-flex shrink-0 items-center justify-center rounded-full',
-    TONES[tone],
+    solid ? ['shadow-md', SOLID[tone]] : SOFT[tone],
     SIZES[size].box,
     className,
   ]}
