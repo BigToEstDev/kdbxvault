@@ -10,6 +10,7 @@ import { i18nAttrs } from '../../i18n/locales';
 import T from '../../i18n/T.astro';
 import Logo from '../brand/Logo.astro';
 import Container from '../ui/Container.astro';
+import { linkAttrs } from '../ui/link';
 
 const year = new Date().getFullYear();
 ---
@@ -32,10 +33,11 @@ const year = new Date().getFullYear();
 
       <nav {...i18nAttrs({ 'aria-label': 'footer.label' })}>
         <ul class="flex flex-col gap-2">
-          {FOOTER_NAV.map(({ href, label, icon }) => (
+          {FOOTER_NAV.map(({ href, label, icon, external = false }) => (
             <li>
               <a
                 href={href}
+                {...linkAttrs(external)}
                 class="inline-flex items-center gap-2 rounded-sm text-sm text-on-surface-variant transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 <Icon name={icon} class="size-4" aria-hidden="true" />

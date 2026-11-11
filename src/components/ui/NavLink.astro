@@ -1,23 +1,26 @@
 ---
 /**
  * A link of the navigation. The current page is marked (`aria-current`, the color of the primary) - by the path:
- * the page itself and the pages under it; anchors are never current. `block` - a full-width row, for the drawer.
- * Other attributes go to the link (`data-drawer-close`).
+ * the page itself and the pages under it; anchors and links out of the site (`external` - a new tab) are never
+ * current. `block` - a full-width row, for the drawer. Other attributes go to the link (`data-drawer-close`).
  */
 import type { HTMLAttributes } from 'astro/types';
+import { linkAttrs } from './link';
 
 type Props = Omit<HTMLAttributes<'a'>, 'class' | 'href'> & {
   href: string;
   block?: boolean;
+  external?: boolean;
   class?: string;
 };
 
-const { href, block = false, class: className, ...rest } = Astro.props;
+const { href, block = false, external = false, class: className, ...rest } = Astro.props;
 
 const trim = (path: string) => (path.length > 1 ? path.replace(/\/+$/, '') : path);
 const current = trim(Astro.url.pathname);
 const target = trim(href);
 const active =
+  !external &&
   !href.includes('#') &&
   (current === target || (target !== '/' && current.startsWith(`${target}/`)));
 ---
@@ -34,6 +37,7 @@ const active =
       : 'text-on-surface-variant hover:bg-on-surface/6 hover:text-on-surface',
     className,
   ]}
+  {...linkAttrs(external)}
   {...rest}
 >
   <slot />

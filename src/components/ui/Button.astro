@@ -1,16 +1,19 @@
 ---
 /**
- * A button - a <button>, or with `href` a link that looks like one. Leading / trailing icon - names of the
- * icon sets (`material-symbols:download`). The text - the slot.
+ * A button - a <button>, or with `href` a link that looks like one. `external` - a link out of the site: a new tab,
+ * no access to this page (`noopener noreferrer`). Leading / trailing icon - names of the icon sets
+ * (`material-symbols:download`). The text - the slot.
  */
 import type { HTMLAttributes } from 'astro/types';
 import { Icon } from 'astro-icon/components';
 import { buttonClasses, type ButtonSize, type ButtonVariant } from './button-styles';
+import { linkAttrs } from './link';
 
 type Props = Omit<HTMLAttributes<'button'>, 'class'> & {
   variant?: ButtonVariant;
   size?: ButtonSize;
   href?: string;
+  external?: boolean;
   icon?: string;
   iconEnd?: string;
   class?: string;
@@ -20,6 +23,7 @@ const {
   variant = 'filled',
   size = 'md',
   href,
+  external = false,
   icon,
   iconEnd,
   class: className,
@@ -31,7 +35,7 @@ const classes = [buttonClasses(variant, size), className];
 ---
 
 {href ? (
-  <a href={href} class:list={classes} {...(rest as HTMLAttributes<'a'>)}>
+  <a href={href} class:list={classes} {...linkAttrs(external)} {...(rest as HTMLAttributes<'a'>)}>
     {icon && <Icon name={icon} class="size-5" aria-hidden="true" />}
     <slot />
     {iconEnd && <Icon name={iconEnd} class="size-5" aria-hidden="true" />}

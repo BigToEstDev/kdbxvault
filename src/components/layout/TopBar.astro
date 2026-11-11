@@ -5,7 +5,7 @@
  * Mobile: the logo - «Donate», «Download» (icons) and the menu button; the drawer holds the pages, GitHub, language
  * and theme.
  */
-import { ICONS, MAIN_NAV, navItem, ROUTES } from '../../config/nav';
+import { GITHUB, ICONS, MAIN_NAV, navItem, ROUTES } from '../../config/nav';
 import { i18nAttrs } from '../../i18n/locales';
 import T from '../../i18n/T.astro';
 import Logo from '../brand/Logo.astro';
@@ -43,7 +43,7 @@ const donate = navItem(ROUTES.donate);
     <div class="hidden items-center gap-1 lg:flex">
       <LocaleSwitcher id="bar-locale" />
       <ThemeSwitcher id="bar-theme" />
-      <IconButton icon={ICONS.github} label="nav.github" href={ROUTES.github} />
+      <IconButton icon={GITHUB.icon} label={GITHUB.label} href={GITHUB.href} external />
       <Button href={ROUTES.download} icon={ICONS.download} class="ml-2">
         <T k="nav.download" />
       </Button>
@@ -83,9 +83,10 @@ const donate = navItem(ROUTES.donate);
           <T k={label} />
         </NavLink>
       ))}
-      <NavLink href={ROUTES.github} block data-drawer-close>
-        <Icon name={ICONS.github} class="size-5" aria-hidden="true" />
-        <T k="nav.github" />
+      <NavLink href={GITHUB.href} block external data-drawer-close>
+        <Icon name={GITHUB.icon} class="size-5" aria-hidden="true" />
+        <T k={GITHUB.label} />
+        <Icon name={ICONS.external} class="ml-auto size-4 opacity-60" aria-hidden="true" />
       </NavLink>
     </nav>
 
