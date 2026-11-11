@@ -89,7 +89,15 @@
         "title": "Biometrics and auto-lock",
         "text": "Fingerprint unlock on Android; locks itself when idle."
       },
-      "generate": "Generate a password"
+      "generate": "Generate a password",
+      "copy": "Copy the password",
+      "copied": "Copied",
+      "bits": "bits",
+      "classes": {
+        "letters": "Letters",
+        "digits": "Digits",
+        "symbols": "Symbols"
+      }
     },
     "sync": {
       "eyebrow": "Local sync",

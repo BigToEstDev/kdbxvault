@@ -41,9 +41,30 @@ export function generatePassword(length: number = PASSWORD_LENGTH): string {
   return chars.join('');
 }
 
-/** The color of a character by its class - as the app shows a password (Color.kt: PasswordDigit, PasswordSymbol). */
+/** The classes of characters as a password is shown: letters (both cases), digits, symbols. */
+export const CHAR_CLASSES = ['letters', 'digits', 'symbols'] as const;
+export type CharClass = (typeof CHAR_CLASSES)[number];
+
+export function charClass(char: string): CharClass {
+  if (/\d/.test(char)) return 'digits';
+  if (/[a-z]/i.test(char)) return 'letters';
+  return 'symbols';
+}
+
+/** The color of a class - as the app shows a password (Color.kt: PasswordDigit, PasswordSymbol). */
+export const CLASS_COLORS: Record<CharClass, string> = {
+  letters: 'text-on-surface',
+  digits: 'text-password-digit',
+  symbols: 'text-password-symbol',
+};
+
 export function charColor(char: string): string {
-  if (/\d/.test(char)) return 'text-password-digit';
-  if (/[a-z]/i.test(char)) return 'text-on-surface';
-  return 'text-password-symbol';
+  return CLASS_COLORS[charClass(char)];
+}
+
+/** How many characters of each class a password has. */
+export function countClasses(password: string): Record<CharClass, number> {
+  const counts: Record<CharClass, number> = { letters: 0, digits: 0, symbols: 0 };
+  for (const char of password) counts[charClass(char)] += 1;
+  return counts;
 }
