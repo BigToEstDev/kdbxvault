@@ -1,0 +1,37 @@
+---
+/**
+ * The logo: the shield with a keyhole of the app icon (pass-app: drawable/ic_launcher_shield.xml, the same paths in
+ * its 120 x 120 viewport). Colors - the tokens of the theme. With `withName` - the name of the app beside it.
+ */
+import { SITE } from '../../config/site';
+
+interface Props {
+  withName?: boolean;
+  class?: string;
+}
+
+const { withName = false, class: className } = Astro.props;
+---
+
+<span class:list={['inline-flex items-center gap-2', className]}>
+  <svg viewBox="10 4 100 112" class="size-8 shrink-0" aria-hidden="true">
+    <path
+      class="fill-primary"
+      d="M60,6 L104,22 V56 C104,84 86,104 60,114 C34,104 16,84 16,56 V22 Z"
+    ></path>
+    <path
+      class="fill-on-surface"
+      fill-opacity="0.12"
+      d="M60,6 L104,22 V56 C104,84 86,104 60,114 Z"
+    ></path>
+    <path
+      class="fill-on-primary"
+      d="M47,50 a13,13 0 1,1 26,0 a13,13 0 1,1 -26,0 Z M55,58 L51,84 H69 L65,58 Z"
+    ></path>
+  </svg>
+  {withName && (
+    <span class="text-lg font-semibold tracking-tight" translate="no">
+      {SITE.name}
+    </span>
+  )}
+</span>

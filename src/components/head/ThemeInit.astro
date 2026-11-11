@@ -1,0 +1,16 @@
+---
+/**
+ * Sets the chosen theme before the first paint - inline in <head>, so the page does not flash in the other one.
+ * The logic of the choice is src/scripts/theme.ts; here - only reading it back.
+ */
+import { THEME_STORAGE_KEY } from '../../scripts/theme';
+---
+
+<script is:inline define:vars={{ key: THEME_STORAGE_KEY }}>
+  try {
+    const theme = localStorage.getItem(key);
+    if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+  } catch {
+    // Storage is off - the system theme.
+  }
+</script>

@@ -1,0 +1,34 @@
+---
+/**
+ * A link of the navigation. The current page is marked (`aria-current`, the color of the primary) - by the path:
+ * the page itself and the pages under it. `block` - a full-width row, for the drawer.
+ */
+interface Props {
+  href: string;
+  block?: boolean;
+  class?: string;
+}
+
+const { href, block = false, class: className } = Astro.props;
+
+const trim = (path: string) => (path.length > 1 ? path.replace(/\/+$/, '') : path);
+const current = trim(Astro.url.pathname);
+const target = trim(href);
+const active = !href.includes('#') && (current === target || current.startsWith(`${target}/`));
+---
+
+<a
+  href={href}
+  aria-current={active ? 'page' : undefined}
+  class:list={[
+    'inline-flex items-center gap-2 rounded-full text-sm font-medium transition-colors duration-150',
+    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+    block ? 'w-full px-4 py-3' : 'px-4 py-2',
+    active
+      ? 'bg-primary/12 text-primary'
+      : 'text-on-surface-variant hover:bg-on-surface/6 hover:text-on-surface',
+    className,
+  ]}
+>
+  <slot />
+</a>

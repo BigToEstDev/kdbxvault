@@ -1,0 +1,41 @@
+---
+/**
+ * A button of a single icon - a <button>, or with `href` a link. `label` is required: it is the accessible name
+ * (there is no visible text).
+ */
+import type { HTMLAttributes } from 'astro/types';
+import { Icon } from 'astro-icon/components';
+import { iconButtonClasses, type ButtonSize, type IconButtonVariant } from './button-styles';
+
+type Props = Omit<HTMLAttributes<'button'>, 'class' | 'aria-label'> & {
+  icon: string;
+  label: string;
+  variant?: IconButtonVariant;
+  size?: ButtonSize;
+  href?: string;
+  class?: string;
+};
+
+const {
+  icon,
+  label,
+  variant = 'standard',
+  size = 'md',
+  href,
+  class: className,
+  type = 'button',
+  ...rest
+} = Astro.props;
+
+const classes = [iconButtonClasses(variant, size), className];
+---
+
+{href ? (
+  <a href={href} aria-label={label} class:list={classes} {...(rest as HTMLAttributes<'a'>)}>
+    <Icon name={icon} class="size-6" aria-hidden="true" />
+  </a>
+) : (
+  <button type={type} aria-label={label} class:list={classes} {...rest}>
+    <Icon name={icon} class="size-6" aria-hidden="true" />
+  </button>
+)}

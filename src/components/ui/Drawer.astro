@@ -1,0 +1,104 @@
+---
+/**
+ * A panel sliding in from the side, on a modal <dialog>: the browser keeps the focus inside, closes on Esc and
+ * makes the rest of the page inert. Opened by a button with `data-drawer-open={id}`; closed by a click on the
+ * scrim or by anything inside with `data-drawer-close`. The content - the slot.
+ */
+interface Props {
+  id: string;
+  label: string;
+  side?: 'start' | 'end';
+  class?: string;
+}
+
+const { id, label, side = 'end', class: className } = Astro.props;
+---
+
+<dialog
+  id={id}
+  aria-label={label}
+  data-drawer
+  data-side={side}
+  class:list={[
+    'drawer m-0 h-dvh max-h-none w-80 max-w-[85vw] border-outline/20 bg-surface-container-low p-0 text-on-surface shadow-2xl',
+    side === 'end' ? 'ml-auto border-l' : 'mr-auto border-r',
+    className,
+  ]}
+>
+  <slot />
+</dialog>
+
+<style>
+  .drawer {
+    --shift: 100%;
+    transform: translateX(var(--shift));
+    transition:
+      transform 200ms ease-out,
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
+  }
+
+  .drawer[data-side='start'] {
+    --shift: -100%;
+  }
+
+  .drawer[open] {
+    transform: none;
+  }
+
+  @starting-style {
+    .drawer[open] {
+      transform: translateX(var(--shift));
+    }
+  }
+
+  .drawer::backdrop {
+    background: color-mix(in oklab, var(--color-scrim) 0%, transparent);
+    transition:
+      background 200ms ease-out,
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
+  }
+
+  .drawer[open]::backdrop {
+    background: color-mix(in oklab, var(--color-scrim) 40%, transparent);
+  }
+
+  @starting-style {
+    .drawer[open]::backdrop {
+      background: color-mix(in oklab, var(--color-scrim) 0%, transparent);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .drawer,
+    .drawer::backdrop {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  for (const opener of document.querySelectorAll<HTMLElement>('[data-drawer-open]')) {
+    const drawer = document.getElementById(opener.dataset.drawerOpen ?? '');
+    if (!(drawer instanceof HTMLDialogElement)) continue;
+
+    opener.setAttribute('aria-haspopup', 'dialog');
+    opener.setAttribute('aria-expanded', 'false');
+    opener.addEventListener('click', () => {
+      drawer.showModal();
+      opener.setAttribute('aria-expanded', 'true');
+    });
+    drawer.addEventListener('close', () => opener.setAttribute('aria-expanded', 'false'));
+  }
+
+  for (const drawer of document.querySelectorAll<HTMLDialogElement>('dialog[data-drawer]')) {
+    // A click on the dialog itself, not on its content, is a click on the scrim.
+    drawer.addEventListener('click', (event) => {
+      if (event.target === drawer) drawer.close();
+    });
+    for (const closer of drawer.querySelectorAll<HTMLElement>('[data-drawer-close]')) {
+      closer.addEventListener('click', () => drawer.close());
+    }
+  }
+</script>
