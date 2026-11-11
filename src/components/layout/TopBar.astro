@@ -2,9 +2,10 @@
 /**
  * The top bar of every page: fixed on top, glass over the backdrop.
  * Desktop (lg and wider): the logo with the name - the pages in the center - language, theme, GitHub, «Download».
- * Mobile: the logo - «Download» (icon) and the menu button; the drawer holds the pages, GitHub, language and theme.
+ * Mobile: the logo - «Donate», «Download» (icons) and the menu button; the drawer holds the pages, GitHub, language
+ * and theme.
  */
-import { ICONS, MAIN_NAV, ROUTES } from '../../config/nav';
+import { ICONS, MAIN_NAV, navItem, ROUTES } from '../../config/nav';
 import { i18nAttrs } from '../../i18n/locales';
 import T from '../../i18n/T.astro';
 import Logo from '../brand/Logo.astro';
@@ -18,6 +19,7 @@ import NavLink from '../ui/NavLink.astro';
 import { Icon } from 'astro-icon/components';
 
 const DRAWER_ID = 'nav-drawer';
+const donate = navItem(ROUTES.donate);
 ---
 
 <header class="sticky top-0 z-40 border-b border-outline/15 bg-surface/70 backdrop-blur-xl backdrop-saturate-150">
@@ -48,6 +50,14 @@ const DRAWER_ID = 'nav-drawer';
     </div>
 
     <div class="flex items-center gap-1 lg:hidden">
+      <!-- mr-2: between two filled circles the same visible gap as from «Download» to the menu glyph -->
+      <IconButton
+        icon={donate.icon}
+        label={donate.label}
+        href={donate.href}
+        variant="accent"
+        class="mr-2"
+      />
       <IconButton
         icon={ICONS.download}
         label="nav.download"
