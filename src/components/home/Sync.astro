@@ -1,0 +1,62 @@
+---
+/**
+ * Local sync: a diagram - a phone and a PC, each with its copy of the database, the two copies going both ways
+ * with «no network» between them; under it - the three ways (merge both ways, import, save / share a copy).
+ */
+import type { MessageKey } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+import Card from '../ui/Card.astro';
+import Chip from '../ui/Chip.astro';
+import IconBadge from '../ui/IconBadge.astro';
+import Section from '../sections/Section.astro';
+import DeviceTile from './visuals/DeviceTile.astro';
+import FlowLine from './visuals/FlowLine.astro';
+
+const WAYS: readonly { label: MessageKey; icon: string }[] = [
+  { label: 'home.sync.merge', icon: 'material-symbols:merge-rounded' },
+  { label: 'home.sync.import', icon: 'material-symbols:input-rounded' },
+  { label: 'home.sync.copy', icon: 'material-symbols:share-outline-rounded' },
+];
+---
+
+<Section eyebrow="home.sync.eyebrow" title="home.sync.title" text="home.sync.text">
+  <Card class="flex flex-col items-center md:flex-row md:px-12 md:py-12" data-reveal="scale">
+    <DeviceTile label="home.sync.phone" icon="material-symbols:smartphone-outline" />
+
+    <div class="flex flex-col items-center md:flex-1 md:flex-row">
+      <FlowLine both class="md:mx-4" />
+      <Chip icon="material-symbols:wifi-off-rounded" tone="tertiary" class="shrink-0">
+        <T k="home.sync.noNetwork" />
+      </Chip>
+      <FlowLine both class="md:mx-4" />
+    </div>
+
+    <DeviceTile
+      label="home.sync.pc"
+      icon="material-symbols:laptop-windows-outline-rounded"
+      tone="tertiary"
+    />
+  </Card>
+
+  <ol class="grid gap-4 md:grid-cols-3">
+    {WAYS.map(({ label, icon }, i) => (
+      <Card
+        as="li"
+        interactive
+        class="flex items-center gap-4"
+        data-reveal
+        style={`--reveal-delay: ${i * 100}ms`}
+      >
+        <span class="relative">
+          <IconBadge icon={icon} tone="primary" />
+          <span class="absolute -top-1 -right-1 inline-flex size-5 items-center justify-center rounded-full bg-tertiary text-[0.65rem] font-bold text-on-tertiary tabular-nums">
+            {i + 1}
+          </span>
+        </span>
+        <span class="font-medium">
+          <T k={label} />
+        </span>
+      </Card>
+    ))}
+  </ol>
+</Section>

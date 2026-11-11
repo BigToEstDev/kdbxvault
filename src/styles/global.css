@@ -40,6 +40,17 @@
 
   --color-scrim: #000000;
 
+  /* The error of M3 (the scheme of the app takes the default one) */
+  --color-error: light-dark(#ba1a1a, #ffb4ab);
+  --color-error-container: light-dark(#ffdad6, #93000a);
+  --color-on-error-container: light-dark(#410002, #ffdad6);
+
+  /* Service colors of the app (Color.kt) - not of the brand: the classes of a password, its strength */
+  --color-password-digit: light-dark(#1565c0, #82b1ff);
+  --color-password-symbol: light-dark(#d84315, #ffab91);
+  --color-strength-medium: light-dark(#f9a825, #ffd54f);
+  --color-strength-strong: light-dark(#2e7d32, #81c784);
+
   /* The shapes of the app (ui/theme/Shape.kt) */
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -72,6 +83,69 @@
 
   body {
     @apply min-h-dvh bg-background text-on-background antialiased;
+  }
+}
+
+/*
+ * Reveal on scroll (src/scripts/reveal.ts): `[data-reveal]` comes up and fades in when it enters the window;
+ * `--reveal-delay` staggers a group. Hidden only when JS runs (`.js` on <html>, set in <head>) and motion is welcome -
+ * without either, everything is just shown.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  /* The reveal (opacity, transform) is staggered; the hover of cards (translate, shadow, border) is not delayed */
+  .js [data-reveal] {
+    transition-property: opacity, transform, translate, box-shadow, border-color;
+    transition-duration: 600ms, 600ms, 200ms, 200ms, 200ms;
+    transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0ms, 0ms, 0ms;
+  }
+
+  .js [data-reveal]:not(.is-revealed) {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  .js [data-reveal='scale']:not(.is-revealed) {
+    transform: scale(0.96);
+  }
+
+  /* Slow drift of the hero mockup */
+  .float {
+    animation: float 7s ease-in-out infinite;
+  }
+
+  .float-delayed {
+    animation: float 7s ease-in-out -3.5s infinite;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  /* The pulse of the arrows of the diagrams */
+  .flow-dot {
+    animation: flow 2.4s ease-in-out infinite;
+  }
+
+  @keyframes flow {
+    0% {
+      left: 0%;
+      opacity: 0;
+    }
+    15%,
+    85% {
+      opacity: 1;
+    }
+    100% {
+      left: 100%;
+      opacity: 0;
+    }
   }
 }
 

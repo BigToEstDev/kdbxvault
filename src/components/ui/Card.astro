@@ -1,21 +1,33 @@
 ---
 /**
  * A panel on the backdrop: the container color a little transparent, a hairline border, the large shape of the app.
- * Other attributes go to the element (`id` for an anchor).
+ * `interactive` - lifts on hover. `padded={false}` - no inner padding (for a visual that fills the card).
+ * Other attributes go to the element (`id` for an anchor, `data-reveal`, `style`).
  */
 import type { HTMLAttributes } from 'astro/types';
 
 type Props = Omit<HTMLAttributes<'section'>, 'class'> & {
-  as?: 'section' | 'div' | 'article';
+  as?: 'section' | 'div' | 'article' | 'li';
+  interactive?: boolean;
+  padded?: boolean;
   class?: string;
 };
 
-const { as: Tag = 'div', class: className, ...rest } = Astro.props;
+const {
+  as: Tag = 'div',
+  interactive = false,
+  padded = true,
+  class: className,
+  ...rest
+} = Astro.props;
 ---
 
 <Tag
   class:list={[
-    'rounded-lg border border-outline/15 bg-surface-container-low/80 p-6 shadow-sm backdrop-blur-sm sm:p-8',
+    'rounded-lg border border-outline/15 bg-surface-container-low/80 shadow-sm backdrop-blur-sm',
+    padded && 'p-6 sm:p-8',
+    interactive &&
+      'transition-[translate,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg',
     className,
   ]}
   {...rest}

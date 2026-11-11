@@ -1,80 +1,30 @@
 ---
 /*
- * The home page: for now - the name of the app and the panels the top bar leads to (#download, #github).
- * The content of the sections comes in the next steps.
+ * The home page: the story is told by pictures - cards, diagrams, panels; text only as short captions.
+ * Order: what it is - why it is safe - what it opens - what it can - sync - where - download - code - support.
  */
-import Logo from '../components/brand/Logo.astro';
-import Button from '../components/ui/Button.astro';
-import Card from '../components/ui/Card.astro';
-import Container from '../components/ui/Container.astro';
-import { ICONS } from '../config/nav';
-import { SITE } from '../config/site';
-import T from '../i18n/T.astro';
+import Compat from '../components/home/Compat.astro';
+import Download from '../components/home/Download.astro';
+import Features from '../components/home/Features.astro';
+import Hero from '../components/home/Hero.astro';
+import OpenSource from '../components/home/OpenSource.astro';
+import Platforms from '../components/home/Platforms.astro';
+import Privacy from '../components/home/Privacy.astro';
+import Stats from '../components/home/Stats.astro';
+import Support from '../components/home/Support.astro';
+import Sync from '../components/home/Sync.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Icon } from 'astro-icon/components';
-import type { MessageKey } from '../i18n/locales';
-
-interface Panel {
-  id: string;
-  title: MessageKey;
-  text: MessageKey;
-  icon: string;
-  /** A link out of the site - opens in a new tab. */
-  action?: { label: MessageKey; href: string; icon: string };
-}
-
-const PANELS: readonly Panel[] = [
-  { id: 'download', title: 'nav.download', text: 'home.download', icon: ICONS.download },
-  {
-    id: 'github',
-    title: 'footer.source',
-    text: 'home.github',
-    icon: ICONS.github,
-    action: { label: 'home.githubOpen', href: SITE.githubAppUrl, icon: ICONS.github },
-  },
-];
 ---
 
 <BaseLayout>
-  <Container class="flex flex-col gap-12 pt-16 sm:pt-24">
-    <section class="flex flex-col items-start gap-5">
-      <Logo class="[&_svg]:size-16" />
-      <h1 class="text-4xl font-semibold tracking-tight sm:text-6xl" translate="no">
-        {SITE.name}
-      </h1>
-      <p class="max-w-2xl text-lg text-on-surface-variant sm:text-xl">
-        <T k="site.description" />
-      </p>
-    </section>
-
-    <div class="grid gap-6 md:grid-cols-2">
-      {PANELS.map(({ id, title, text, icon, action }) => (
-        <Card as="section" id={id} class="flex flex-col gap-3">
-          <div class="flex items-center gap-3">
-            <span class="inline-flex size-10 items-center justify-center rounded-full bg-primary/12 text-primary">
-              <Icon name={icon} class="size-5" aria-hidden="true" />
-            </span>
-            <h2 class="text-xl font-semibold">
-              <T k={title} />
-            </h2>
-          </div>
-          <p class="text-on-surface-variant">
-            <T k={text} />
-          </p>
-          {action && (
-            <Button
-              href={action.href}
-              external
-              variant="outlined"
-              icon={action.icon}
-              iconEnd={ICONS.external}
-              class="mt-2 self-start"
-            >
-              <T k={action.label} />
-            </Button>
-          )}
-        </Card>
-      ))}
-    </div>
-  </Container>
+  <Hero />
+  <Stats />
+  <Privacy />
+  <Compat />
+  <Features />
+  <Sync />
+  <Platforms />
+  <Download />
+  <OpenSource />
+  <Support />
 </BaseLayout>

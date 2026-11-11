@@ -1,0 +1,58 @@
+---
+/** The facts in figures: big numbers and a short line under each - the free, the private, the platforms. */
+import { PLATFORMS } from '../../config/platforms';
+import type { MessageKey } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+import Card from '../ui/Card.astro';
+import Container from '../ui/Container.astro';
+import IconBadge, { type IconTone } from '../ui/IconBadge.astro';
+
+const STATS: readonly { value: string; label: MessageKey; icon: string; tone: IconTone }[] = [
+  {
+    value: '0',
+    label: 'home.stats.price',
+    icon: 'material-symbols:money-off-rounded',
+    tone: 'tertiary',
+  },
+  {
+    value: '0',
+    label: 'home.stats.accounts',
+    icon: 'material-symbols:no-accounts-outline-rounded',
+    tone: 'primary',
+  },
+  {
+    value: '0',
+    label: 'home.stats.trackers',
+    icon: 'material-symbols:visibility-off-outline-rounded',
+    tone: 'secondary',
+  },
+  {
+    value: String(PLATFORMS.length),
+    label: 'home.stats.platforms',
+    icon: 'material-symbols:devices-outline-rounded',
+    tone: 'success',
+  },
+];
+---
+
+<section class="pt-20 sm:pt-28">
+  <Container>
+    <ul class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      {STATS.map(({ value, label, icon, tone }, i) => (
+        <Card
+          as="li"
+          interactive
+          class="flex flex-col gap-3"
+          data-reveal
+          style={`--reveal-delay: ${i * 80}ms`}
+        >
+          <IconBadge icon={icon} tone={tone} size="sm" />
+          <span class="text-5xl font-bold tracking-tight text-primary tabular-nums">{value}</span>
+          <span class="text-sm text-on-surface-variant">
+            <T k={label} />
+          </span>
+        </Card>
+      ))}
+    </ul>
+  </Container>
+</section>

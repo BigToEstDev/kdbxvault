@@ -9,8 +9,148 @@
     "soon": "This section is coming soon."
   },
   "home": {
-    "download": "Installers for Android and desktop will be here.",
-    "github": "The app is open source: the code, issues and releases are on GitHub.",
+    "hero": {
+      "tagline": "Your passwords. Your file. Your devices.",
+      "text": "A password manager for KeePass databases on Android and desktop - free, offline and open source.",
+      "chips": {
+        "free": "Free",
+        "offline": "Offline",
+        "open": "Open source",
+        "kdbx": "KDBX 4"
+      },
+      "float": {
+        "locked": "Encrypted",
+        "local": "Stays on device"
+      }
+    },
+    "stats": {
+      "price": "price - free forever",
+      "accounts": "accounts and sign-ups",
+      "trackers": "trackers, ads, analytics",
+      "platforms": "platforms - Android and desktop"
+    },
+    "privacy": {
+      "eyebrow": "Privacy",
+      "title": "Your vault never leaves you",
+      "text": "No one between you and your passwords.",
+      "you": "You",
+      "file": "Your .kdbx file",
+      "cloud": "Cloud",
+      "servers": "Servers",
+      "trackers": "Trackers",
+      "noData": {
+        "title": "Collects nothing",
+        "text": "No analytics, no telemetry. On Android - no network permission at all."
+      },
+      "noAccount": {
+        "title": "No sign-up",
+        "text": "Install and use. No account, no email."
+      },
+      "local": {
+        "title": "Stored on your devices",
+        "text": "The database is a file you choose: phone, PC or a flash drive."
+      },
+      "onlyYou": {
+        "title": "Only you have the key",
+        "text": "Encrypted with your password and key file. Nobody else can open it."
+      }
+    },
+    "compat": {
+      "eyebrow": "Compatibility",
+      "title": "One file - many apps",
+      "text": "A standard KDBX 4 database: open the same file in the apps of the KeePass family.",
+      "file": "Same database"
+    },
+    "features": {
+      "eyebrow": "Features",
+      "title": "Everything a vault needs",
+      "generator": {
+        "title": "Password generator",
+        "text": "One tap on the dice - a strong password with a strength check."
+      },
+      "strong": "Strong",
+      "keys": {
+        "title": "Password and key file",
+        "text": "Open a database with a password, a key file or both."
+      },
+      "attachments": {
+        "title": "Attachments",
+        "text": "Keep files inside entries."
+      },
+      "history": {
+        "title": "History and recycle bin",
+        "text": "Changes are kept, deleted entries come back."
+      },
+      "search": {
+        "title": "Search",
+        "text": "Find any entry in a moment."
+      },
+      "lock": {
+        "title": "Biometrics and auto-lock",
+        "text": "Fingerprint unlock on Android; locks itself when idle."
+      }
+    },
+    "sync": {
+      "eyebrow": "Local sync",
+      "title": "Sync without a network",
+      "text": "Two copies of the database come together right on the device - no cloud in between.",
+      "phone": "Phone",
+      "pc": "PC",
+      "noNetwork": "No network",
+      "merge": "Merge a copy - both ways",
+      "import": "Import another database",
+      "copy": "Save or share a copy"
+    },
+    "platforms": {
+      "eyebrow": "Platforms",
+      "title": "One app - phone and desktop",
+      "tested": "Tested",
+      "untested": "Not tested yet",
+      "androidReq": "Android 10 or newer",
+      "desktopReq": "Desktop app"
+    },
+    "download": {
+      "eyebrow": "Download",
+      "title": "Get KDBX Vault",
+      "text": "Installers will appear with the first release.",
+      "soon": "Soon",
+      "warning": {
+        "title": "The system will warn you - that is expected",
+        "text": "Installers are not signed yet: signing licenses cost money. Windows SmartScreen and macOS Gatekeeper will show a warning - the code is open, you can check it.",
+        "action": "Help buy the licenses"
+      }
+    },
+    "open": {
+      "eyebrow": "Open source",
+      "title": "All the code is open",
+      "text": "Read it, build it, check it.",
+      "app": {
+        "title": "The app",
+        "text": "Android and desktop - Kotlin, Compose Multiplatform."
+      },
+      "core": {
+        "title": "The core",
+        "text": "The KDBX engine - Rust."
+      },
+      "issues": {
+        "title": "Found a bug?",
+        "text": "Describe it in Issues - it helps a lot.",
+        "action": "Report a bug"
+      },
+      "repo": "Repository",
+      "disclaimer": "Provided as is, without warranty (GPL-3.0). Keep a backup of your database."
+    },
+    "support": {
+      "eyebrow": "Support",
+      "title": "Free - and it stays free",
+      "text": "Donations pay for the licenses: code signing and the stores. Then the warnings go away.",
+      "action": "Support the project",
+      "telegram": {
+        "title": "Join the Telegram group",
+        "text": "News, questions and ideas.",
+        "action": "Join"
+      }
+    },
     "githubOpen": "Open on GitHub"
   },
   "notFound": {

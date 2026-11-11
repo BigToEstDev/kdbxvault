@@ -1,0 +1,32 @@
+---
+/** A device of a diagram with its copy of the database: the device icon in a tile, a database badge in the corner. */
+import { Icon } from 'astro-icon/components';
+import type { MessageKey } from '../../../i18n/locales';
+import T from '../../../i18n/T.astro';
+
+interface Props {
+  label: MessageKey;
+  icon: string;
+  /** The color of the copy - to tell the two copies apart. */
+  tone?: 'primary' | 'tertiary';
+}
+
+const { label, icon, tone = 'primary' } = Astro.props;
+---
+
+<div class="flex shrink-0 flex-col items-center gap-3">
+  <span class="relative inline-flex size-24 items-center justify-center rounded-lg border border-outline/20 bg-surface-container shadow-md">
+    <Icon name={icon} class="size-12 text-on-surface-variant" aria-hidden="true" />
+    <span
+      class:list={[
+        'absolute -right-2 -bottom-2 inline-flex size-9 items-center justify-center rounded-full shadow-md',
+        tone === 'primary' ? 'bg-primary text-on-primary' : 'bg-tertiary text-on-tertiary',
+      ]}
+    >
+      <Icon name="material-symbols:database-outline-rounded" class="size-5" aria-hidden="true" />
+    </span>
+  </span>
+  <span class="text-sm font-medium">
+    <T k={label} />
+  </span>
+</div>

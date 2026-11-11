@@ -1,0 +1,41 @@
+---
+/** An icon in a tonal circle - the mark of a card, a heading, a step of a diagram. Colors - tokens by `tone`. */
+import { Icon } from 'astro-icon/components';
+
+export type IconTone = 'primary' | 'secondary' | 'tertiary' | 'neutral' | 'error' | 'success';
+
+interface Props {
+  icon: string;
+  tone?: IconTone;
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const { icon, tone = 'primary', size = 'md', class: className } = Astro.props;
+
+const TONES: Record<IconTone, string> = {
+  primary: 'bg-primary/12 text-primary',
+  secondary: 'bg-secondary-container text-on-secondary-container',
+  tertiary: 'bg-tertiary/20 text-on-tertiary-container',
+  neutral: 'bg-on-surface/8 text-on-surface-variant',
+  error: 'bg-error/12 text-error',
+  success: 'bg-strength-strong/15 text-strength-strong',
+};
+
+const SIZES = {
+  sm: { box: 'size-8', icon: 'size-4' },
+  md: { box: 'size-11', icon: 'size-6' },
+  lg: { box: 'size-14', icon: 'size-7' },
+} as const;
+---
+
+<span
+  class:list={[
+    'inline-flex shrink-0 items-center justify-center rounded-full',
+    TONES[tone],
+    SIZES[size].box,
+    className,
+  ]}
+>
+  <Icon name={icon} class={SIZES[size].icon} aria-hidden="true" />
+</span>

@@ -1,0 +1,124 @@
+---
+/**
+ * Open source (`#github`): the two repositories - the app and the core - and where bugs go (Issues); the license and
+ * «as is, without warranty» under them.
+ */
+import { Icon } from 'astro-icon/components';
+import { ICONS } from '../../config/nav';
+import { SITE } from '../../config/site';
+import type { MessageKey } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+import Button from '../ui/Button.astro';
+import Card from '../ui/Card.astro';
+import Chip from '../ui/Chip.astro';
+import IconBadge, { type IconTone } from '../ui/IconBadge.astro';
+import Section from '../sections/Section.astro';
+
+interface Repo {
+  title: MessageKey;
+  text: MessageKey;
+  icon: string;
+  tone: IconTone;
+  tech: readonly { name: string; icon: string }[];
+  action: MessageKey;
+  href: string;
+  actionIcon: string;
+}
+
+const REPOS: readonly Repo[] = [
+  {
+    title: 'home.open.app.title',
+    text: 'home.open.app.text',
+    icon: 'material-symbols:devices-outline-rounded',
+    tone: 'primary',
+    tech: [
+      { name: 'Kotlin', icon: 'simple-icons:kotlin' },
+      { name: 'Compose', icon: 'simple-icons:android' },
+    ],
+    action: 'home.open.repo',
+    href: SITE.githubAppUrl,
+    actionIcon: ICONS.github,
+  },
+  {
+    title: 'home.open.core.title',
+    text: 'home.open.core.text',
+    icon: 'material-symbols:memory-outline-rounded',
+    tone: 'tertiary',
+    tech: [{ name: 'Rust', icon: 'simple-icons:rust' }],
+    action: 'home.open.repo',
+    href: SITE.githubCoreUrl,
+    actionIcon: ICONS.github,
+  },
+  {
+    title: 'home.open.issues.title',
+    text: 'home.open.issues.text',
+    icon: 'material-symbols:bug-report-outline-rounded',
+    tone: 'error',
+    tech: [],
+    action: 'home.open.issues.action',
+    href: SITE.issuesUrl,
+    actionIcon: 'material-symbols:bug-report-outline-rounded',
+  },
+];
+---
+
+<Section id="github" eyebrow="home.open.eyebrow" title="home.open.title" text="home.open.text">
+  <ul class="grid gap-4 md:grid-cols-3">
+    {REPOS.map(({ title, text, icon, tone, tech, action, href, actionIcon }, i) => (
+      <Card
+        as="li"
+        interactive
+        class="flex flex-col gap-4"
+        data-reveal
+        style={`--reveal-delay: ${i * 100}ms`}
+      >
+        <div class="flex items-center justify-between gap-3">
+          <IconBadge icon={icon} tone={tone} size="lg" />
+          <Icon name={ICONS.github} class="size-6 text-on-surface-variant/60" aria-hidden="true" />
+        </div>
+        <div class="flex flex-col gap-1">
+          <h3 class="text-xl font-semibold">
+            <T k={title} />
+          </h3>
+          <p class="text-sm text-on-surface-variant">
+            <T k={text} />
+          </p>
+        </div>
+        {tech.length > 0 && (
+          <div class="flex flex-wrap gap-2" aria-hidden="true">
+            {tech.map((item) => (
+              <Chip icon={item.icon}>{item.name}</Chip>
+            ))}
+          </div>
+        )}
+        <Button
+          href={href}
+          external
+          variant="outlined"
+          icon={actionIcon}
+          iconEnd={ICONS.external}
+          class="mt-auto self-start"
+        >
+          <T k={action} />
+        </Button>
+      </Card>
+    ))}
+  </ul>
+
+  <div
+    class="flex flex-col items-center justify-center gap-3 text-center text-sm text-on-surface-variant sm:flex-row"
+    data-reveal
+  >
+    <Chip icon="material-symbols:balance-rounded" tone="primary">
+      {SITE.license}
+    </Chip>
+    <span class="inline-flex items-center gap-2">
+      <Icon
+        name="material-symbols:info-outline-rounded"
+        class="size-4 shrink-0"
+        aria-hidden="true"
+      />
+      <T k="home.open.disclaimer" />
+    </span>
+  </div>
+</Section>

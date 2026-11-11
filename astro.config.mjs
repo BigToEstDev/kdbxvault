@@ -17,6 +17,20 @@ export default defineConfig({
         url: true,
         startsWith: 'https://github.com/',
       }),
+      PUBLIC_GITHUB_CORE_URL: envField.string({
+        context: 'client',
+        access: 'public',
+        url: true,
+        startsWith: 'https://github.com/',
+      }),
+      // Optional: without it the card of the group is not shown
+      PUBLIC_TELEGRAM_URL: envField.string({
+        context: 'client',
+        access: 'public',
+        url: true,
+        startsWith: 'https://t.me/',
+        optional: true,
+      }),
     },
   },
   vite: {

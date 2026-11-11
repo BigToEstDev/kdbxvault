@@ -1,0 +1,82 @@
+---
+/**
+ * The features - a bento grid: the generator large, with its picture; the rest - an icon, a title and one line.
+ * From the app README (Features) and the steps of the app.
+ */
+import type { MessageKey } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+import Card from '../ui/Card.astro';
+import IconBadge, { type IconTone } from '../ui/IconBadge.astro';
+import Section from '../sections/Section.astro';
+import PasswordSample from './visuals/PasswordSample.astro';
+
+const FEATURES: readonly { title: MessageKey; text: MessageKey; icon: string; tone: IconTone }[] = [
+  {
+    title: 'home.features.keys.title',
+    text: 'home.features.keys.text',
+    icon: 'material-symbols:vpn-key-outline-rounded',
+    tone: 'primary',
+  },
+  {
+    title: 'home.features.lock.title',
+    text: 'home.features.lock.text',
+    icon: 'material-symbols:fingerprint-rounded',
+    tone: 'secondary',
+  },
+  {
+    title: 'home.features.attachments.title',
+    text: 'home.features.attachments.text',
+    icon: 'material-symbols:attach-file-rounded',
+    tone: 'tertiary',
+  },
+  {
+    title: 'home.features.history.title',
+    text: 'home.features.history.text',
+    icon: 'material-symbols:history-rounded',
+    tone: 'success',
+  },
+  {
+    title: 'home.features.search.title',
+    text: 'home.features.search.text',
+    icon: 'material-symbols:search-rounded',
+    tone: 'neutral',
+  },
+];
+---
+
+<Section eyebrow="home.features.eyebrow" title="home.features.title">
+  <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <Card as="li" interactive class="flex flex-col gap-5 sm:col-span-2 lg:row-span-2" data-reveal>
+      <div class="flex items-center gap-3">
+        <IconBadge icon="material-symbols:casino-outline-rounded" tone="primary" size="lg" />
+        <h3 class="text-xl font-semibold">
+          <T k="home.features.generator.title" />
+        </h3>
+      </div>
+      <p class="text-on-surface-variant">
+        <T k="home.features.generator.text" />
+      </p>
+      <div class="mt-auto">
+        <PasswordSample />
+      </div>
+    </Card>
+
+    {FEATURES.map(({ title, text, icon, tone }, i) => (
+      <Card
+        as="li"
+        interactive
+        class="flex flex-col gap-3"
+        data-reveal
+        style={`--reveal-delay: ${(i + 1) * 80}ms`}
+      >
+        <IconBadge icon={icon} tone={tone} />
+        <h3 class="text-lg font-semibold">
+          <T k={title} />
+        </h3>
+        <p class="text-sm text-on-surface-variant">
+          <T k={text} />
+        </p>
+      </Card>
+    ))}
+  </ul>
+</Section>

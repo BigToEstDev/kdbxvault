@@ -1,0 +1,44 @@
+---
+/**
+ * A section of a page: a small label (eyebrow), a heading and a short line - keys of the dictionaries - and the
+ * content (the slot). The heading comes up on scroll (`data-reveal`); a soft divider separates it from the one above.
+ */
+import type { MessageKey } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+import Container from '../ui/Container.astro';
+
+interface Props {
+  id?: string;
+  eyebrow: MessageKey;
+  title: MessageKey;
+  text?: MessageKey;
+  divider?: boolean;
+  class?: string;
+}
+
+const { id, eyebrow, title, text, divider = true, class: className } = Astro.props;
+---
+
+<section id={id} class:list={['relative pt-24 sm:pt-32', className]}>
+  {divider && (
+    <div class="absolute inset-x-0 top-0 flex justify-center" aria-hidden="true">
+      <div class="h-px w-2/3 max-w-3xl bg-linear-to-r from-transparent via-outline/30 to-transparent" />
+    </div>
+  )}
+  <Container class="flex flex-col gap-12">
+    <header class="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center" data-reveal>
+      <span class="rounded-full border border-primary/25 bg-primary/8 px-3 py-1 text-xs font-semibold tracking-wider text-primary uppercase">
+        <T k={eyebrow} />
+      </span>
+      <h2 class="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+        <T k={title} />
+      </h2>
+      {text && (
+        <p class="text-lg text-pretty text-on-surface-variant">
+          <T k={text} />
+        </p>
+      )}
+    </header>
+    <slot />
+  </Container>
+</section>

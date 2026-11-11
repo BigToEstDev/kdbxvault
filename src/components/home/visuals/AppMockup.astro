@@ -1,0 +1,109 @@
+---
+/**
+ * A drawing of the app - a desktop window and a phone in front of it, the lists of entries as skeletons (no texts:
+ * the picture says «an app with entries»). Colors - the tokens of the theme; it drifts slowly (`.float`).
+ * Decoration only: hidden from assistive tech, the facts are told by the floating chips (`labels`).
+ */
+import { Icon } from 'astro-icon/components';
+import Logo from '../../brand/Logo.astro';
+import IconBadge, { type IconTone } from '../../ui/IconBadge.astro';
+import Chip from '../../ui/Chip.astro';
+import T from '../../../i18n/T.astro';
+
+const ENTRIES: readonly { icon: string; tone: IconTone; width: string }[] = [
+  { icon: 'material-symbols:mail-outline-rounded', tone: 'primary', width: 'w-24' },
+  { icon: 'material-symbols:account-balance-outline-rounded', tone: 'tertiary', width: 'w-20' },
+  { icon: 'material-symbols:public-rounded', tone: 'secondary', width: 'w-28' },
+  { icon: 'material-symbols:shopping-cart-outline-rounded', tone: 'success', width: 'w-16' },
+  { icon: 'material-symbols:key-outline-rounded', tone: 'neutral', width: 'w-24' },
+];
+
+const GROUPS = ['w-16', 'w-12', 'w-20', 'w-14'];
+---
+
+<div class="relative mx-auto aspect-[5/4] w-full max-w-xl">
+  <div aria-hidden="true" class="absolute inset-0">
+    <!-- The desktop window -->
+    <div class="float absolute top-0 right-14 bottom-12 left-0 flex flex-col overflow-hidden rounded-lg border border-outline/20 bg-surface-container shadow-2xl">
+      <div class="flex items-center gap-2 border-b border-outline/15 px-4 py-3">
+        <span class="size-2.5 rounded-full bg-error/70"></span>
+        <span class="size-2.5 rounded-full bg-strength-medium/80"></span>
+        <span class="size-2.5 rounded-full bg-strength-strong/70"></span>
+        <Logo class="ml-3 [&_svg]:size-5" />
+        <span class="h-2 w-20 rounded-full bg-on-surface/15"></span>
+      </div>
+      <div class="flex flex-1">
+        <div class="hidden w-1/3 flex-col gap-3 border-r border-outline/15 p-4 sm:flex">
+          {GROUPS.map((width, i) => (
+            <div
+              class:list={['flex items-center gap-2 rounded-md p-1.5', i === 0 && 'bg-primary/12']}
+            >
+              <span class="size-3 rounded-sm bg-primary/40" />
+              <span class:list={['h-2 rounded-full bg-on-surface/15', width]} />
+            </div>
+          ))}
+        </div>
+        <div class="flex flex-1 flex-col gap-1 p-3">
+          {ENTRIES.map(({ icon, tone, width }) => (
+            <div class="flex items-center gap-3 rounded-md p-2">
+              <IconBadge icon={icon} tone={tone} size="sm" />
+              <div class="flex flex-1 flex-col gap-1.5">
+                <span class:list={['h-2 rounded-full bg-on-surface/25', width]} />
+                <span class="h-1.5 w-12 rounded-full bg-on-surface/10" />
+              </div>
+              <span class="hidden font-mono text-xs tracking-widest text-on-surface-variant md:inline">
+                ••••••
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- The phone -->
+    <div class="float-delayed absolute right-0 bottom-0 flex aspect-[9/18] w-[38%] flex-col gap-2 overflow-hidden rounded-[1.75rem] border-[6px] border-surface-container-highest bg-surface p-3 shadow-2xl">
+      <span class="mx-auto h-1.5 w-10 rounded-full bg-on-surface/20"></span>
+      <div class="flex items-center gap-2">
+        <Logo class="[&_svg]:size-5" />
+        <span class="h-2 w-12 rounded-full bg-on-surface/20"></span>
+      </div>
+      <div class="flex h-6 items-center gap-1.5 rounded-full bg-surface-container-high px-2">
+        <span class="size-2 rounded-full border border-on-surface/40"></span>
+        <span class="h-1.5 w-10 rounded-full bg-on-surface/15"></span>
+      </div>
+      {ENTRIES.slice(0, 4).map(({ tone, width }) => (
+        <div class="flex items-center gap-2 rounded-md bg-surface-container-low p-1.5">
+          <span
+            class:list={[
+              'size-5 shrink-0 rounded-full',
+              tone === 'primary' && 'bg-primary/40',
+              tone === 'tertiary' && 'bg-tertiary/60',
+              tone === 'secondary' && 'bg-secondary/40',
+              tone === 'success' && 'bg-strength-strong/40',
+            ]}
+          />
+          <span class:list={['h-1.5 rounded-full bg-on-surface/20', width]} />
+        </div>
+      ))}
+      <span class="mt-auto ml-auto inline-flex size-8 items-center justify-center rounded-lg bg-primary text-on-primary">
+        <Icon name="material-symbols:add-rounded" class="size-5" />
+      </span>
+    </div>
+  </div>
+
+  <!-- The facts the picture tells -->
+  <Chip
+    icon="material-symbols:lock-rounded"
+    tone="primary"
+    class="absolute top-6 -left-2 shadow-md sm:-left-6"
+  >
+    <T k="home.hero.float.locked" />
+  </Chip>
+  <Chip
+    icon="material-symbols:devices-outline-rounded"
+    tone="tertiary"
+    class="absolute bottom-20 -left-2 shadow-md sm:-left-4"
+  >
+    <T k="home.hero.float.local" />
+  </Chip>
+</div>
