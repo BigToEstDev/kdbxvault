@@ -74,3 +74,36 @@
     @apply min-h-dvh bg-background text-on-background antialiased;
   }
 }
+
+/* The text of the Markdown documents (LegalDocument) */
+@layer components {
+  .doc {
+    @apply leading-relaxed text-on-surface;
+
+    & h2 {
+      @apply mt-8 mb-3 text-xl font-semibold tracking-tight first:mt-0;
+    }
+
+    & h3 {
+      @apply mt-6 mb-2 text-lg font-semibold;
+    }
+
+    & p,
+    & ul,
+    & ol {
+      @apply mb-4 text-on-surface-variant;
+    }
+
+    & ul {
+      @apply list-disc pl-6;
+    }
+
+    & ol {
+      @apply list-decimal pl-6;
+    }
+
+    & a {
+      @apply text-primary underline underline-offset-2 hover:no-underline;
+    }
+  }
+}

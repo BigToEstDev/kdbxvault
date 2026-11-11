@@ -5,6 +5,18 @@
   "a11y": {
     "skip": "Skip to content"
   },
+  "placeholder": {
+    "soon": "This section is coming soon."
+  },
+  "home": {
+    "download": "Installers for Android and desktop will be here.",
+    "github": "The app is open source - its repository on GitHub will be here."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "There is no such page. It may have moved.",
+    "home": "To the home page"
+  },
   "nav": {
     "label": "Main",
     "home": "KDBX Vault - home",

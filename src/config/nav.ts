@@ -58,3 +58,10 @@ export const ICONS = {
   themeLight: 'material-symbols:light-mode-outline-rounded',
   themeDark: 'material-symbols:dark-mode-outline-rounded',
 } as const;
+
+/** The item of a route - its label and icon for the heading of its page. */
+export function navItem(href: string): NavItem {
+  const item = [...MAIN_NAV, ...FOOTER_NAV].find((entry) => entry.href === href);
+  if (!item) throw new Error(`nav: no item for "${href}"`);
+  return item;
+}

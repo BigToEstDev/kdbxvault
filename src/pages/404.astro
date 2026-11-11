@@ -1,0 +1,25 @@
+---
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import Container from '../components/ui/Container.astro';
+import { ROUTES } from '../config/nav';
+import T from '../i18n/T.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="notFound.title">
+  <Container class="flex justify-center pt-16 sm:pt-24">
+    <Card class="flex max-w-md flex-col items-center gap-4 text-center">
+      <p class="text-6xl font-semibold tracking-tight text-primary">404</p>
+      <h1 class="text-2xl font-semibold">
+        <T k="notFound.title" />
+      </h1>
+      <p class="text-on-surface-variant">
+        <T k="notFound.text" />
+      </p>
+      <Button href={ROUTES.home} icon="material-symbols:home-outline-rounded" variant="tonal">
+        <T k="notFound.home" />
+      </Button>
+    </Card>
+  </Container>
+</BaseLayout>

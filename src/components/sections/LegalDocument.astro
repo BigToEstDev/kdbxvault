@@ -1,0 +1,33 @@
+---
+/**
+ * A document page from Markdown (policy, terms): one file per language (src/content/legal/<name>.<code>.md), all put
+ * into the HTML, the current one shown by CSS - as every text of the site (LocaleInit).
+ */
+import type { MarkdownInstance } from 'astro';
+import { LOCALES, type Locale, type MessageKey } from '../../i18n/locales';
+import Card from '../ui/Card.astro';
+import Container from '../ui/Container.astro';
+import PageHeader from './PageHeader.astro';
+
+interface Props {
+  title: MessageKey;
+  icon: string;
+  docs: Record<Locale, MarkdownInstance<Record<string, unknown>>>;
+}
+
+const { title, icon, docs } = Astro.props;
+---
+
+<Container class="flex flex-col gap-8 pt-12 sm:pt-16">
+  <PageHeader title={title} icon={icon} />
+  <Card as="article" class="doc">
+    {LOCALES.map(({ code }) => {
+      const Content = docs[code].Content;
+      return (
+        <div lang={code} data-i18n-lang={code}>
+          <Content />
+        </div>
+      );
+    })}
+  </Card>
+</Container>
