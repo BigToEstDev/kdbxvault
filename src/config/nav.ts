@@ -33,7 +33,7 @@ export const MAIN_NAV: readonly NavItem[] = [
     label: 'nav.releases',
     icon: 'material-symbols:deployed-code-history-outline-rounded',
   },
-  { href: ROUTES.donate, label: 'nav.donate', icon: 'material-symbols:favorite-outline-rounded' },
+  { href: ROUTES.donate, label: 'nav.donate', icon: 'material-symbols:coffee-outline-rounded' },
 ];
 
 /** The links of the footer. */

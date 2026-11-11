@@ -2,7 +2,8 @@
  * The looks of the buttons - one place for Button and IconButton (and for links that look like buttons).
  * Pill shapes and state layers in the manner of Material 3; colors - only the tokens of the theme.
  */
-export type ButtonVariant = 'filled' | 'tonal' | 'outlined' | 'text';
+/** `accent` - the gold of the brand (tertiary): for what stands apart from the main action (donations). */
+export type ButtonVariant = 'filled' | 'accent' | 'tonal' | 'outlined' | 'text';
 export type ButtonSize = 'sm' | 'md';
 
 const BASE =
@@ -13,6 +14,7 @@ const BASE =
 
 const VARIANTS: Record<ButtonVariant, string> = {
   filled: 'bg-primary text-on-primary shadow-sm hover:bg-primary/90 hover:shadow-md',
+  accent: 'bg-tertiary text-on-tertiary shadow-sm hover:bg-tertiary/90 hover:shadow-md',
   tonal: 'bg-secondary-container text-on-secondary-container hover:bg-secondary-container/80',
   outlined: 'border border-outline/40 text-primary hover:bg-primary/8',
   text: 'text-primary hover:bg-primary/8',
