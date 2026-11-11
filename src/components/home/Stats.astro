@@ -1,0 +1,68 @@
+---
+/**
+ * «Nothing extra»: one panel - a big 0 at the top left with its caption, under it what the zero counts - no
+ * subscriptions, no sign-up, no ads and trackers - each with a solid icon.
+ */
+import type { MessageKey } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+import Card from '../ui/Card.astro';
+import Container from '../ui/Container.astro';
+import IconBadge, { type IconTone } from '../ui/IconBadge.astro';
+
+const NONE: readonly { label: MessageKey; icon: string; tone: IconTone }[] = [
+  {
+    label: 'home.stats.subscriptions',
+    icon: 'material-symbols:money-off-rounded',
+    tone: 'tertiary',
+  },
+  {
+    label: 'home.stats.accounts',
+    icon: 'material-symbols:no-accounts-outline-rounded',
+    tone: 'primary',
+  },
+  {
+    label: 'home.stats.ads',
+    icon: 'material-symbols:visibility-off-outline-rounded',
+    tone: 'secondary',
+  },
+];
+---
+
+<section class="pt-20 sm:pt-28">
+  <Container>
+    <Card class="relative flex flex-col gap-8 overflow-hidden sm:p-10" data-reveal="scale">
+      <div
+        class="pointer-events-none absolute -top-20 -left-20 size-72 rounded-full bg-primary/15 blur-3xl"
+        aria-hidden="true"
+      ></div>
+
+      <!-- items-baseline: the caption sits on the line of the zero; padding - room for the gradient glyph -->
+      <div class="relative flex flex-wrap items-baseline gap-x-5 gap-y-2">
+        <span
+          class="inline-block bg-linear-to-br from-primary to-secondary bg-clip-text px-1 py-2 text-8xl leading-tight font-bold tracking-tight text-transparent tabular-nums sm:text-9xl"
+          aria-hidden="true"
+        >
+          0
+        </span>
+        <span class="text-2xl font-semibold text-balance sm:text-3xl">
+          <T k="home.stats.title" />
+        </span>
+      </div>
+
+      <ul class="relative grid gap-4 sm:grid-cols-3">
+        {NONE.map(({ label, icon, tone }, i) => (
+          <li
+            class="flex items-center gap-4 rounded-lg bg-surface-container/70 p-4"
+            data-reveal
+            style={`--reveal-delay: ${150 + i * 100}ms`}
+          >
+            <IconBadge icon={icon} tone={tone} solid size="lg" />
+            <span class="font-medium">
+              <T k={label} />
+            </span>
+          </li>
+        ))}
+      </ul>
+    </Card>
+  </Container>
+</section>

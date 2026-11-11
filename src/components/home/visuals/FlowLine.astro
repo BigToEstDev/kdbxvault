@@ -1,0 +1,30 @@
+---
+/**
+ * A connector of a diagram: a line with a dot running along it (`.flow-dot`, global.css) - «goes there».
+ * Horizontal from `md`, vertical below it. `both` - two dots in opposite directions (a sync).
+ */
+interface Props {
+  both?: boolean;
+  class?: string;
+}
+
+const { both = false, class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    'relative flex shrink-0 items-center justify-center',
+    'h-10 w-px md:h-px md:w-auto md:min-w-12 md:flex-1',
+    className,
+  ]}
+  aria-hidden="true"
+>
+  <span class="absolute inset-0 bg-linear-to-b from-primary/10 via-primary/50 to-primary/10 md:bg-linear-to-r"></span>
+  <span class="flow-dot absolute hidden size-2 rounded-full bg-primary shadow-[0_0_10px] shadow-primary md:block"></span>
+  {both && (
+    <span
+      class="flow-dot absolute hidden size-2 rounded-full bg-tertiary shadow-[0_0_10px] shadow-tertiary md:block"
+      style="animation-direction: reverse; animation-delay: -1.2s"
+    />
+  )}
+</div>

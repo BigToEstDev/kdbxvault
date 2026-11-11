@@ -1,0 +1,76 @@
+---
+/**
+ * Download (`#download` - the top bar leads here): a button per platform - disabled «soon» until the first release -
+ * and the warning about unsigned installers, with the way to help (donations for the licenses).
+ */
+import { Icon } from 'astro-icon/components';
+import { ROUTES } from '../../config/nav';
+import { PLATFORMS } from '../../config/platforms';
+import T from '../../i18n/T.astro';
+import Button from '../ui/Button.astro';
+import Card from '../ui/Card.astro';
+import Chip from '../ui/Chip.astro';
+import Section from '../sections/Section.astro';
+---
+
+<Section
+  id="download"
+  eyebrow="home.download.eyebrow"
+  title="home.download.title"
+  text="home.download.text"
+>
+  <Card class="relative overflow-hidden" data-reveal="scale">
+    <div
+      class="pointer-events-none absolute -top-24 -right-24 size-72 rounded-full bg-primary/15 blur-3xl"
+      aria-hidden="true"
+    ></div>
+    <ul class="relative grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {PLATFORMS.map(({ name, icon }) => (
+        <li>
+          <button
+            type="button"
+            disabled
+            class="flex w-full items-center gap-3 rounded-lg border border-outline/20 bg-surface-container p-4 text-left opacity-80"
+          >
+            <Icon name={icon} class="size-7 shrink-0" aria-hidden="true" />
+            <span class="flex-1 font-semibold" translate="no">
+              {name}
+            </span>
+            <Chip tone="neutral">
+              <T k="home.download.soon" />
+            </Chip>
+          </button>
+        </li>
+      ))}
+    </ul>
+  </Card>
+
+  <Card
+    class="flex flex-col gap-4 border-strength-medium/40 bg-tertiary-container/40 sm:flex-row sm:items-start"
+    data-reveal
+  >
+    <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-tertiary text-on-tertiary">
+      <Icon name="material-symbols:gpp-maybe-outline-rounded" class="size-6" aria-hidden="true" />
+    </span>
+    <div class="flex flex-1 flex-col gap-2">
+      <h3 class="text-lg font-semibold">
+        <T k="home.download.warning.title" />
+      </h3>
+      <p class="text-sm text-on-surface-variant">
+        <T k="home.download.warning.text" />
+      </p>
+      <div class="flex flex-wrap gap-2 pt-1" aria-hidden="true">
+        <Chip icon="simple-icons:windows">SmartScreen</Chip>
+        <Chip icon="simple-icons:apple">Gatekeeper</Chip>
+      </div>
+    </div>
+    <Button
+      href={ROUTES.donate}
+      variant="accent"
+      icon="material-symbols:coffee-outline-rounded"
+      class="self-start"
+    >
+      <T k="home.download.warning.action" />
+    </Button>
+  </Card>
+</Section>

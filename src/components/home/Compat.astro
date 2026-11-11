@@ -1,0 +1,60 @@
+---
+/**
+ * Compatibility: a diagram - our app, the same .kdbx file in the middle, the apps of the KeePass family that open it.
+ * Their names are brands: shown as they are, without their logos.
+ */
+import { Icon } from 'astro-icon/components';
+import { COMPATIBLE_APPS } from '../../config/platforms';
+import { SITE } from '../../config/site';
+import T from '../../i18n/T.astro';
+import Logo from '../brand/Logo.astro';
+import Card from '../ui/Card.astro';
+import Section from '../sections/Section.astro';
+import FlowLine from './visuals/FlowLine.astro';
+---
+
+<Section eyebrow="home.compat.eyebrow" title="home.compat.title" text="home.compat.text">
+  <Card class="flex flex-col items-center md:flex-row md:px-12 md:py-12" data-reveal="scale">
+    <div class="flex items-center gap-3 rounded-full border border-primary/30 bg-primary/10 py-2 pr-5 pl-2">
+      <Logo class="[&_svg]:size-9" />
+      <span class="font-semibold" translate="no">
+        {SITE.name}
+      </span>
+    </div>
+
+    <FlowLine both class="md:mx-4" />
+
+    <div class="flex flex-col items-center gap-2">
+      <span class="relative inline-flex size-24 flex-col items-center justify-center gap-1 rounded-lg bg-linear-to-br from-primary to-secondary text-on-primary shadow-xl">
+        <Icon name="material-symbols:database-outline-rounded" class="size-10" aria-hidden="true" />
+        <span class="font-mono text-xs font-semibold" translate="no">
+          .kdbx
+        </span>
+      </span>
+      <span class="text-sm text-on-surface-variant">
+        <T k="home.compat.file" />
+      </span>
+    </div>
+
+    <FlowLine both class="md:mx-4" />
+
+    <ul class="flex flex-col gap-2">
+      {COMPATIBLE_APPS.map((app, i) => (
+        <li
+          class="flex items-center gap-2 rounded-full border border-outline/25 bg-surface-container px-4 py-2"
+          data-reveal
+          style={`--reveal-delay: ${200 + i * 100}ms`}
+        >
+          <Icon
+            name="material-symbols:check-circle-outline-rounded"
+            class="size-5 text-strength-strong"
+            aria-hidden="true"
+          />
+          <span class="font-medium" translate="no">
+            {app}
+          </span>
+        </li>
+      ))}
+    </ul>
+  </Card>
+</Section>

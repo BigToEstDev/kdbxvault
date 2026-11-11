@@ -28,6 +28,9 @@ const titles = Object.fromEntries(
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
     <ThemeInit />
     <LocaleInit />
     <title data-i18n-text={JSON.stringify(titles)}>{titles[DEFAULT_LOCALE]}</title>
@@ -48,5 +51,10 @@ const titles = Object.fromEntries(
       <slot />
     </main>
     <Footer />
+    <script>
+      import { initReveal } from '../scripts/reveal';
+
+      initReveal();
+    </script>
   </body>
 </html>

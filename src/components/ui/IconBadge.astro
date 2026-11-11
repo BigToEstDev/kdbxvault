@@ -1,0 +1,54 @@
+---
+/**
+ * An icon in a circle - the mark of a card, a heading, a step of a diagram. Colors - tokens by `tone`; `solid` - a
+ * full fill of the tone (stands out on any background), else a soft tint.
+ */
+import { Icon } from 'astro-icon/components';
+
+export type IconTone = 'primary' | 'secondary' | 'tertiary' | 'neutral' | 'error' | 'success';
+
+interface Props {
+  icon: string;
+  tone?: IconTone;
+  solid?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const { icon, tone = 'primary', solid = false, size = 'md', class: className } = Astro.props;
+
+const SOFT: Record<IconTone, string> = {
+  primary: 'bg-primary/12 text-primary',
+  secondary: 'bg-secondary-container text-on-secondary-container',
+  tertiary: 'bg-tertiary/20 text-on-tertiary-container',
+  neutral: 'bg-on-surface/8 text-on-surface-variant',
+  error: 'bg-error/12 text-error',
+  success: 'bg-strength-strong/15 text-strength-strong',
+};
+
+const SOLID: Record<IconTone, string> = {
+  primary: 'bg-primary text-on-primary',
+  secondary: 'bg-secondary text-on-secondary',
+  tertiary: 'bg-tertiary text-on-tertiary',
+  neutral: 'bg-on-surface-variant text-surface',
+  error: 'bg-error text-surface',
+  success: 'bg-strength-strong text-surface',
+};
+
+const SIZES = {
+  sm: { box: 'size-8', icon: 'size-4' },
+  md: { box: 'size-11', icon: 'size-6' },
+  lg: { box: 'size-14', icon: 'size-7' },
+} as const;
+---
+
+<span
+  class:list={[
+    'inline-flex shrink-0 items-center justify-center rounded-full',
+    solid ? ['shadow-md', SOLID[tone]] : SOFT[tone],
+    SIZES[size].box,
+    className,
+  ]}
+>
+  <Icon name={icon} class={SIZES[size].icon} aria-hidden="true" />
+</span>

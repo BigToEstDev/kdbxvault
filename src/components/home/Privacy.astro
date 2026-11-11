@@ -1,0 +1,115 @@
+---
+/**
+ * Privacy: a diagram «you - your file», with what is not there crossed out (cloud, servers, trackers), and four cards
+ * (collects nothing, no sign-up, stored on your devices, only you have the key).
+ */
+import { Icon } from 'astro-icon/components';
+import type { MessageKey } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+import Card from '../ui/Card.astro';
+import IconBadge, { type IconTone } from '../ui/IconBadge.astro';
+import Section from '../sections/Section.astro';
+import FlowLine from './visuals/FlowLine.astro';
+
+const ABSENT: readonly { label: MessageKey; icon: string }[] = [
+  { label: 'home.privacy.cloud', icon: 'material-symbols:cloud-outline-rounded' },
+  { label: 'home.privacy.servers', icon: 'material-symbols:dns-outline-rounded' },
+  { label: 'home.privacy.trackers', icon: 'material-symbols:analytics-outline-rounded' },
+];
+
+const CARDS: readonly { title: MessageKey; text: MessageKey; icon: string; tone: IconTone }[] = [
+  {
+    title: 'home.privacy.noData.title',
+    text: 'home.privacy.noData.text',
+    icon: 'material-symbols:visibility-off-outline-rounded',
+    tone: 'primary',
+  },
+  {
+    title: 'home.privacy.noAccount.title',
+    text: 'home.privacy.noAccount.text',
+    icon: 'material-symbols:no-accounts-outline-rounded',
+    tone: 'secondary',
+  },
+  {
+    title: 'home.privacy.local.title',
+    text: 'home.privacy.local.text',
+    icon: 'material-symbols:devices-outline-rounded',
+    tone: 'tertiary',
+  },
+  {
+    title: 'home.privacy.onlyYou.title',
+    text: 'home.privacy.onlyYou.text',
+    icon: 'material-symbols:key-outline-rounded',
+    tone: 'success',
+  },
+];
+---
+
+<Section eyebrow="home.privacy.eyebrow" title="home.privacy.title" text="home.privacy.text">
+  <div class="grid items-stretch gap-6 lg:grid-cols-[1fr_1.2fr]">
+    <Card class="flex flex-col items-center justify-center gap-8" data-reveal="scale">
+      <div class="flex w-full flex-col items-center md:flex-row">
+        <div class="flex flex-col items-center gap-2">
+          <IconBadge icon="material-symbols:person-outline-rounded" tone="primary" size="lg" />
+          <span class="text-sm font-medium">
+            <T k="home.privacy.you" />
+          </span>
+        </div>
+        <FlowLine class="md:mx-3 md:mb-6" />
+        <div class="flex flex-col items-center gap-2">
+          <span class="relative inline-flex size-20 items-center justify-center rounded-lg bg-linear-to-br from-primary to-secondary text-on-primary shadow-lg">
+            <Icon
+              name="material-symbols:description-outline-rounded"
+              class="size-10"
+              aria-hidden="true"
+            />
+            <span class="absolute -right-2 -bottom-2 inline-flex size-8 items-center justify-center rounded-full bg-tertiary text-on-tertiary shadow-md">
+              <Icon name="material-symbols:lock-rounded" class="size-4" aria-hidden="true" />
+            </span>
+          </span>
+          <span class="text-sm font-medium">
+            <T k="home.privacy.file" />
+          </span>
+        </div>
+      </div>
+
+      <div class="h-px w-full border-t border-dashed border-outline/30"></div>
+
+      <ul class="flex flex-wrap justify-center gap-6">
+        {ABSENT.map(({ label, icon }) => (
+          <li class="flex flex-col items-center gap-2 opacity-70">
+            <span class="relative inline-flex">
+              <IconBadge icon={icon} tone="neutral" />
+              <span class="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+                <span class="h-0.5 w-12 rotate-45 rounded-full bg-error" />
+              </span>
+            </span>
+            <span class="text-xs text-on-surface-variant line-through decoration-error/70">
+              <T k={label} />
+            </span>
+          </li>
+        ))}
+      </ul>
+    </Card>
+
+    <ul class="grid gap-4 sm:grid-cols-2">
+      {CARDS.map(({ title, text, icon, tone }, i) => (
+        <Card
+          as="li"
+          interactive
+          class="flex flex-col gap-3"
+          data-reveal
+          style={`--reveal-delay: ${i * 90}ms`}
+        >
+          <IconBadge icon={icon} tone={tone} />
+          <h3 class="text-lg font-semibold">
+            <T k={title} />
+          </h3>
+          <p class="text-sm text-on-surface-variant">
+            <T k={text} />
+          </p>
+        </Card>
+      ))}
+    </ul>
+  </div>
+</Section>

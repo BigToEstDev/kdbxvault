@@ -1,0 +1,84 @@
+---
+/**
+ * The first screen: facts as chips, the name, one line and the actions - «Download» (the panel below) and GitHub;
+ * on the right - a drawing of the app.
+ */
+import { GITHUB, ICONS, ROUTES } from '../../config/nav';
+import { SITE } from '../../config/site';
+import type { MessageKey } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+import Button from '../ui/Button.astro';
+import Chip, { type ChipTone } from '../ui/Chip.astro';
+import Container from '../ui/Container.astro';
+import AppMockup from './visuals/AppMockup.astro';
+
+const CHIPS: readonly { label: MessageKey; icon: string; tone: ChipTone }[] = [
+  { label: 'home.hero.chips.free', icon: 'material-symbols:money-off-rounded', tone: 'tertiary' },
+  { label: 'home.hero.chips.offline', icon: 'material-symbols:wifi-off-rounded', tone: 'primary' },
+  { label: 'home.hero.chips.open', icon: 'material-symbols:code-rounded', tone: 'neutral' },
+  {
+    label: 'home.hero.chips.kdbx',
+    icon: 'material-symbols:database-outline-rounded',
+    tone: 'neutral',
+  },
+];
+---
+
+<section class="relative pt-10 sm:pt-16 lg:pt-20">
+  <Container class="grid items-center gap-14 lg:grid-cols-[1.05fr_1fr]">
+    <div class="flex flex-col items-start gap-6">
+      <ul class="flex flex-wrap gap-2" data-reveal>
+        {CHIPS.map(({ label, icon, tone }) => (
+          <li>
+            <Chip icon={icon} tone={tone}>
+              <T k={label} />
+            </Chip>
+          </li>
+        ))}
+      </ul>
+
+      <h1
+        class="bg-linear-to-br from-primary to-secondary bg-clip-text pb-1 text-5xl font-bold tracking-tight text-transparent sm:text-7xl"
+        translate="no"
+        data-reveal
+        style="--reveal-delay: 80ms"
+      >
+        {SITE.name}
+      </h1>
+
+      <p
+        class="text-2xl font-medium text-balance sm:text-3xl"
+        data-reveal
+        style="--reveal-delay: 160ms"
+      >
+        <T k="home.hero.tagline" />
+      </p>
+      <p
+        class="max-w-xl text-lg text-pretty text-on-surface-variant"
+        data-reveal
+        style="--reveal-delay: 220ms"
+      >
+        <T k="home.hero.text" />
+      </p>
+
+      <div class="flex flex-wrap gap-3 pt-2" data-reveal style="--reveal-delay: 280ms">
+        <Button href={ROUTES.download} icon={ICONS.download} class="h-12 px-6 text-base">
+          <T k="nav.download" />
+        </Button>
+        <Button
+          href={GITHUB.href}
+          external
+          variant="outlined"
+          icon={GITHUB.icon}
+          class="h-12 px-6 text-base"
+        >
+          <T k="home.githubOpen" />
+        </Button>
+      </div>
+    </div>
+
+    <div data-reveal="scale" style="--reveal-delay: 200ms">
+      <AppMockup />
+    </div>
+  </Container>
+</section>
