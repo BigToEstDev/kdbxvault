@@ -2,11 +2,13 @@
 /**
  * A panel sliding in from the side, on a modal <dialog>: the browser keeps the focus inside, closes on Esc and
  * makes the rest of the page inert. Opened by a button with `data-drawer-open={id}`; closed by a click on the
- * scrim or by anything inside with `data-drawer-close`. The content - the slot.
+ * scrim or by anything inside with `data-drawer-close`. `label` - a key of the dictionaries. The content - the slot.
  */
+import { i18nAttrs, type MessageKey } from '../../i18n/locales';
+
 interface Props {
   id: string;
-  label: string;
+  label: MessageKey;
   side?: 'start' | 'end';
   class?: string;
 }
@@ -16,7 +18,7 @@ const { id, label, side = 'end', class: className } = Astro.props;
 
 <dialog
   id={id}
-  aria-label={label}
+  {...i18nAttrs({ 'aria-label': label })}
   data-drawer
   data-side={side}
   class:list={[

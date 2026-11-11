@@ -1,15 +1,16 @@
 ---
 /**
- * A button of a single icon - a <button>, or with `href` a link. `label` is required: it is the accessible name
- * (there is no visible text).
+ * A button of a single icon - a <button>, or with `href` a link. `label` - a key of the dictionaries, required: it is
+ * the accessible name (there is no visible text), in every language (i18nAttrs).
  */
 import type { HTMLAttributes } from 'astro/types';
 import { Icon } from 'astro-icon/components';
+import { i18nAttrs, type MessageKey } from '../../i18n/locales';
 import { iconButtonClasses, type ButtonSize, type IconButtonVariant } from './button-styles';
 
 type Props = Omit<HTMLAttributes<'button'>, 'class' | 'aria-label'> & {
   icon: string;
-  label: string;
+  label: MessageKey;
   variant?: IconButtonVariant;
   size?: ButtonSize;
   href?: string;
@@ -28,14 +29,15 @@ const {
 } = Astro.props;
 
 const classes = [iconButtonClasses(variant, size), className];
+const labelAttrs = i18nAttrs({ 'aria-label': label });
 ---
 
 {href ? (
-  <a href={href} aria-label={label} class:list={classes} {...(rest as HTMLAttributes<'a'>)}>
+  <a href={href} class:list={classes} {...labelAttrs} {...(rest as HTMLAttributes<'a'>)}>
     <Icon name={icon} class="size-6" aria-hidden="true" />
   </a>
 ) : (
-  <button type={type} aria-label={label} class:list={classes} {...rest}>
+  <button type={type} class:list={classes} {...labelAttrs} {...rest}>
     <Icon name={icon} class="size-6" aria-hidden="true" />
   </button>
 )}

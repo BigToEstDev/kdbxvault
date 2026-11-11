@@ -4,13 +4,13 @@
  * The logic of the choice is src/scripts/theme.ts; here - only reading it back.
  */
 import { THEME_STORAGE_KEY } from '../../scripts/theme';
+
+const init = `(() => {
+  try {
+    const theme = localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});
+    if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+  } catch {}
+})();`;
 ---
 
-<script is:inline define:vars={{ key: THEME_STORAGE_KEY }}>
-  try {
-    const theme = localStorage.getItem(key);
-    if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
-  } catch {
-    // Storage is off - the system theme.
-  }
-</script>
+<script is:inline set:html={init} />

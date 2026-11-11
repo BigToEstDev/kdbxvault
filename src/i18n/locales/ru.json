@@ -1,0 +1,19 @@
+{
+  "site": {
+    "description": "Бесплатный офлайн-менеджер паролей для баз KeePass (KDBX) на Android и ПК."
+  },
+  "nav": {
+    "menu": "Меню",
+    "close": "Закрыть",
+    "github": "GitHub"
+  },
+  "locale": {
+    "label": "Язык"
+  },
+  "theme": {
+    "label": "Тема",
+    "system": "Как в системе",
+    "light": "Светлая",
+    "dark": "Тёмная"
+  }
+}

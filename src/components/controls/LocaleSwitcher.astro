@@ -1,0 +1,56 @@
+---
+/**
+ * The choice of the language: an icon button and a popup with the languages (their own names). The chosen one is
+ * checked; a choice is applied at once and kept (src/scripts/locale.ts). `id` - unique on the page: the switcher is in
+ * the top bar and in the drawer.
+ */
+import { LOCALES } from '../../i18n/locales';
+import IconButton from '../ui/IconButton.astro';
+import MenuItem from '../ui/MenuItem.astro';
+import Popover from '../ui/Popover.astro';
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+const panelId = `${id}-panel`;
+---
+
+<IconButton
+  icon="material-symbols:translate-rounded"
+  label="locale.label"
+  popovertarget={panelId}
+/>
+<Popover id={panelId}>
+  {LOCALES.map(({ code, nativeName }) => (
+    <MenuItem checkable data-locale-option={code} lang={code} translate="no">
+      {nativeName}
+    </MenuItem>
+  ))}
+</Popover>
+
+<script>
+  import type { Locale } from '../../i18n/locales';
+  import { currentLocale, LOCALE_CHANGE_EVENT, setLocale } from '../../scripts/locale';
+
+  const options = document.querySelectorAll<HTMLElement>('[data-locale-option]');
+
+  function mark(locale: Locale): void {
+    for (const option of options) {
+      option.setAttribute('aria-pressed', String(option.dataset.localeOption === locale));
+    }
+  }
+
+  for (const option of options) {
+    option.addEventListener('click', () => {
+      setLocale(option.dataset.localeOption as Locale);
+      option.closest<HTMLElement>('[popover]')?.hidePopover();
+    });
+  }
+
+  document.addEventListener(LOCALE_CHANGE_EVENT, (event) =>
+    mark((event as CustomEvent<Locale>).detail),
+  );
+  mark(currentLocale());
+</script>

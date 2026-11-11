@@ -1,0 +1,19 @@
+{
+  "site": {
+    "description": "A free offline password manager for KeePass (KDBX) databases on Android and desktop."
+  },
+  "nav": {
+    "menu": "Menu",
+    "close": "Close",
+    "github": "GitHub"
+  },
+  "locale": {
+    "label": "Language"
+  },
+  "theme": {
+    "label": "Theme",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  }
+}

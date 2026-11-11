@@ -1,91 +1,72 @@
 ---
 /*
- * TEMPORARY (Step 120 p1): a showcase of the theme, the backdrop and the UI components - to look at both themes.
- * The texts are not localized on purpose; p4 replaces the page with the real home.
+ * TEMPORARY (Step 120 p1-p2): a showcase of the theme, the backdrop, the UI components and the languages.
+ * The button texts are not localized on purpose; p4 replaces the page with the real home.
  */
 import '../styles/global.css';
 import GradientBackground from '../components/brand/GradientBackground.astro';
 import Logo from '../components/brand/Logo.astro';
+import LocaleSwitcher from '../components/controls/LocaleSwitcher.astro';
+import LocaleInit from '../components/head/LocaleInit.astro';
 import ThemeInit from '../components/head/ThemeInit.astro';
 import Button from '../components/ui/Button.astro';
 import Container from '../components/ui/Container.astro';
 import Drawer from '../components/ui/Drawer.astro';
 import IconButton from '../components/ui/IconButton.astro';
 import NavLink from '../components/ui/NavLink.astro';
-import Popover from '../components/ui/Popover.astro';
+import { DEFAULT_LOCALE } from '../i18n/locales';
+import T from '../i18n/T.astro';
 import { SITE } from '../config/site';
 ---
 
-<html lang="en">
+<html lang={DEFAULT_LOCALE} data-lang={DEFAULT_LOCALE}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{SITE.name}</title>
     <ThemeInit />
+    <LocaleInit />
   </head>
   <body>
     <GradientBackground />
     <Container class="flex flex-col gap-10 py-12">
-      <Logo withName />
+      <div class="flex items-center justify-between">
+        <Logo withName />
+        <LocaleSwitcher id="demo-locale" />
+      </div>
+      <p class="text-on-surface-variant">
+        <T k="site.description" />
+      </p>
 
       <div class="flex flex-wrap items-center gap-3">
         <Button icon="material-symbols:download-rounded">Filled</Button>
         <Button variant="tonal">Tonal</Button>
         <Button variant="outlined">Outlined</Button>
         <Button variant="text">Text</Button>
-        <Button
-          href="#"
-          variant="outlined"
-          size="sm"
-          iconEnd="material-symbols:arrow-forward-rounded"
-        >
-          Link
-        </Button>
       </div>
 
       <div class="flex flex-wrap items-center gap-2">
-        <IconButton icon="simple-icons:github" label="GitHub" />
-        <IconButton
-          icon="material-symbols:dark-mode-outline-rounded"
-          label="Theme"
-          variant="tonal"
-        />
-        <IconButton
-          icon="material-symbols:translate-rounded"
-          label="Language"
-          popovertarget="demo-popover"
-        />
-        <Popover id="demo-popover">
-          <p class="px-3 py-2 text-sm">Popover</p>
-        </Popover>
+        <IconButton icon="simple-icons:github" label="nav.github" />
         <IconButton
           icon="material-symbols:menu-rounded"
-          label="Menu"
+          label="nav.menu"
           data-drawer-open="demo-drawer"
         />
-        <Drawer id="demo-drawer" label="Menu">
+        <Drawer id="demo-drawer" label="nav.menu">
           <div class="flex flex-col gap-1 p-4">
             <IconButton
               icon="material-symbols:close-rounded"
-              label="Close"
+              label="nav.close"
               class="self-end"
               data-drawer-close
             />
             <NavLink href="/" block>
               Home
             </NavLink>
-            <NavLink href="/releases" block>
-              Releases
-            </NavLink>
           </div>
         </Drawer>
       </div>
-
-      <nav class="flex gap-1">
-        <NavLink href="/">Home</NavLink>
-        <NavLink href="/releases">Releases</NavLink>
-      </nav>
 
       <div class="grid gap-4 sm:grid-cols-3">
         <div class="rounded-lg bg-surface-container-low p-6">surface-container-low</div>
