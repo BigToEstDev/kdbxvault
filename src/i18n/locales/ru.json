@@ -120,7 +120,7 @@
     },
     "download": {
       "eyebrow": "Скачать",
-      "title": "Скачайте KDBX Vault",
+      "title": "Скачайте {app}",
       "text": "Установщики появятся с первым релизом.",
       "soon": "Скоро",
       "warning": {
@@ -169,7 +169,7 @@
   },
   "nav": {
     "label": "Основная",
-    "home": "KDBX Vault - на главную",
+    "home": "{app} - на главную",
     "menu": "Меню",
     "close": "Закрыть",
     "github": "GitHub",

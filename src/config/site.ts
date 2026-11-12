@@ -4,10 +4,11 @@ import {
   PUBLIC_GITHUB_CORE_URL,
   PUBLIC_TELEGRAM_URL,
 } from 'astro:env/client';
+import { APP_NAME } from './brand';
 
 export const SITE = {
-  /** The name of the app (pass-docs: docs/policy/naming-and-license.md) - a brand, not translated. */
-  name: 'KDBX Vault',
+  /** The name of the app - a brand, not translated (./brand.ts). */
+  name: APP_NAME,
   /** The public repository of the app (not of the core). */
   githubAppUrl: PUBLIC_GITHUB_APP_URL,
   /** Where bugs are reported - the issues of the app repository. */
