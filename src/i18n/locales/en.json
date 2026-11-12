@@ -120,7 +120,7 @@
     },
     "download": {
       "eyebrow": "Download",
-      "title": "Get KDBX Vault",
+      "title": "Get {app}",
       "text": "Installers will appear with the first release.",
       "soon": "Soon",
       "warning": {
@@ -169,7 +169,7 @@
   },
   "nav": {
     "label": "Main",
-    "home": "KDBX Vault - home",
+    "home": "{app} - home",
     "menu": "Menu",
     "close": "Close",
     "github": "GitHub",

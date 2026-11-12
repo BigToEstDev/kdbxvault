@@ -2,6 +2,7 @@
  * The languages of the site and their strings. One URL for all: every text is put into the HTML in each language,
  * the visible one is chosen by `data-lang` on <html> (src/scripts/locale.ts). The keys are checked at build time.
  */
+import { APP_NAME } from '../config/brand';
 import en from './locales/en.json';
 import ru from './locales/ru.json';
 
@@ -26,12 +27,15 @@ type Leaves<T, P extends string = ''> = {
 
 export type MessageKey = Leaves<Messages>;
 
+/** Where a string names the app: the name is not written in the dictionaries - it is put in here. */
+const APP_PLACEHOLDER = '{app}';
+
 function flatten(node: unknown, prefix = ''): Map<string, string> {
   const out = new Map<string, string>();
   if (typeof node !== 'object' || node === null) return out;
   for (const [key, value] of Object.entries(node)) {
     const path = prefix ? `${prefix}.${key}` : key;
-    if (typeof value === 'string') out.set(path, value);
+    if (typeof value === 'string') out.set(path, value.replaceAll(APP_PLACEHOLDER, APP_NAME));
     else for (const [k, v] of flatten(value, path)) out.set(k, v);
   }
   return out;
