@@ -11,6 +11,7 @@ import Footer from '../components/layout/Footer.astro';
 import TopBar from '../components/layout/TopBar.astro';
 import T from '../i18n/T.astro';
 import { DEFAULT_LOCALE, i18nAttrs, LOCALES, t, type MessageKey } from '../i18n/locales';
+import { withBase } from '../config/base';
 import { SITE } from '../config/site';
 
 interface Props {
@@ -36,7 +37,7 @@ const titles = Object.fromEntries(
     <title data-i18n-text={JSON.stringify(titles)}>{titles[DEFAULT_LOCALE]}</title>
     <meta name="description" {...i18nAttrs({ content: 'site.description' })} />
     <meta name="color-scheme" content="light dark" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
   </head>
   <body class="flex flex-col">
     <a
