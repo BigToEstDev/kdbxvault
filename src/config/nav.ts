@@ -4,6 +4,7 @@
  * (`external` - a new tab).
  */
 import type { MessageKey } from '../i18n/locales';
+import { withBase } from './base';
 import { SITE } from './site';
 
 export interface NavItem {
@@ -27,15 +28,16 @@ export const ICONS = {
   themeDark: 'material-symbols:dark-mode-outline-rounded',
 } as const;
 
+/** The pages of the site - with the prefix of the site (`withBase`). */
 export const ROUTES = {
-  home: '/',
-  screenshots: '/screenshots',
-  releases: '/releases',
-  donate: '/donate',
-  privacy: '/privacy',
-  terms: '/terms',
-  download: '/#download',
-} as const;
+  home: withBase('/'),
+  screenshots: withBase('/screenshots'),
+  releases: withBase('/releases'),
+  donate: withBase('/donate'),
+  privacy: withBase('/privacy'),
+  terms: withBase('/terms'),
+  download: withBase('/#download'),
+};
 
 /** The repository of the app on GitHub - the top bar, the drawer. */
 export const GITHUB: NavItem = {

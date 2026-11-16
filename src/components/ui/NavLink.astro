@@ -2,9 +2,10 @@
 /**
  * A link of the navigation. The current page is marked (`aria-current`, the color of the primary) - by the path:
  * the page itself and the pages under it; anchors and links out of the site (`external` - a new tab) are never
- * current. `block` - a full-width row, for the drawer. Other attributes go to the link (`data-drawer-close`).
+ * current; the home page - only itself. `block` - a full-width row, for the drawer. Other attributes go to the link (`data-drawer-close`).
  */
 import type { HTMLAttributes } from 'astro/types';
+import { ROUTES } from '../../config/nav';
 import { linkAttrs } from './link';
 
 type Props = Omit<HTMLAttributes<'a'>, 'class' | 'href'> & {
@@ -22,7 +23,7 @@ const target = trim(href);
 const active =
   !external &&
   !href.includes('#') &&
-  (current === target || (target !== '/' && current.startsWith(`${target}/`)));
+  (current === target || (href !== ROUTES.home && current.startsWith(`${target}/`)));
 ---
 
 <a
