@@ -7,6 +7,8 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   output: 'static',
+  site: 'https://bigtoestdev.github.io',
+  base: '/kdbxvault',
   integrations: [icon()],
   // The settings of the site - from `.env` (sample: .env.example) or the environment of CI; checked at build time.
   env: {
