@@ -3,7 +3,11 @@ name: Deploy Astro site to GitHub Pages
 on:
   push:
     branches: [main]
+  # After a release is published - by hand: gh workflow run deploy.yml (pass-docs: docs/dev/release-setup.md)
   workflow_dispatch:
+  # Once a day - the releases and the downloads of the app (GitHub at build time); 03:00 UTC
+  schedule:
+    - cron: '0 3 * * *'
 
 permissions:
   contents: read
@@ -38,6 +42,8 @@ jobs:
           PUBLIC_OBTAINIUM_URL: ${{ vars.PUBLIC_OBTAINIUM_URL }}
           GH_API_URL: ${{ vars.GH_API_URL }}
           GH_RAW_URL: ${{ vars.GH_RAW_URL }}
+          # The token of the run - the GitHub API without the limit of 60 requests an hour
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
