@@ -33,6 +33,13 @@ export default defineConfig({
         startsWith: 'https://t.me/',
         optional: true,
       }),
+      // Optional: the token of GitHub for the releases at build time (CI - the token of the run); without it the
+      // API gives 60 requests an hour. Never in the pages.
+      GITHUB_TOKEN: envField.string({
+        context: 'server',
+        access: 'secret',
+        optional: true,
+      }),
     },
   },
   vite: {
