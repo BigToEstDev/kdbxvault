@@ -2,8 +2,8 @@
 /**
  * The large view of an image, on a modal <dialog> - one per page. Opens on a click of a link with
  * `data-lightbox-item={group}` (its `href` - the large image; its <figure> - the caption); the arrows (buttons and
- * the keys ← →) go through the same group; Esc, the button or a click beside the image closes it. Without scripts
- * the links open the images themselves.
+ * the keys ← →) go through the same group; Esc, the button on the top right corner of the image or a click beside
+ * the image closes it. Without scripts the links open the images themselves.
  */
 import IconButton from './IconButton.astro';
 ---
@@ -14,14 +14,24 @@ import IconButton from './IconButton.astro';
   data-lightbox
 >
   <div
-    class="flex h-full flex-col items-center justify-center gap-3 p-4 sm:p-8"
+    class="flex h-full flex-col items-center justify-center gap-3 px-16 py-8 sm:px-24 lg:px-32"
     data-lightbox-backdrop
   >
-    <img
-      alt=""
-      class="max-h-[82dvh] max-w-full rounded-lg object-contain shadow-2xl"
-      data-lightbox-image
-    />
+    <!-- The frame of the image: as large as the image, the close button sits on its corner, a little outside -->
+    <div class="relative max-w-full">
+      <img
+        alt=""
+        class="block max-h-[calc(100dvh-8rem)] max-w-full rounded-lg object-contain shadow-2xl"
+        data-lightbox-image
+      />
+      <IconButton
+        icon="material-symbols:close-rounded"
+        label="nav.close"
+        variant="tonal"
+        class="absolute -top-4 -right-4 shadow-lg"
+        data-lightbox-close
+      />
+    </div>
     <p
       class="rounded-full bg-surface-container-high px-4 py-1.5 text-sm font-medium"
       data-lightbox-caption
@@ -29,24 +39,17 @@ import IconButton from './IconButton.astro';
   </div>
 
   <IconButton
-    icon="material-symbols:close-rounded"
-    label="nav.close"
-    variant="tonal"
-    class="absolute top-4 right-4"
-    data-lightbox-close
-  />
-  <IconButton
     icon="material-symbols:chevron-left-rounded"
     label="lightbox.previous"
     variant="tonal"
-    class="absolute top-1/2 left-2 -translate-y-1/2 sm:left-4"
+    class="absolute top-1/2 left-4 -translate-y-1/2 sm:left-8 lg:left-12"
     data-lightbox-step="-1"
   />
   <IconButton
     icon="material-symbols:chevron-right-rounded"
     label="lightbox.next"
     variant="tonal"
-    class="absolute top-1/2 right-2 -translate-y-1/2 sm:right-4"
+    class="absolute top-1/2 right-4 -translate-y-1/2 sm:right-8 lg:right-12"
     data-lightbox-step="1"
   />
 </dialog>
