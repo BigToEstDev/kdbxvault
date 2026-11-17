@@ -1,0 +1,91 @@
+---
+/**
+ * A release in the news of /releases: the version, «latest» or «test» (`rc`), the date, the link to GitHub, and its
+ * entry of the changelog - the intro and the sections (Added, Changed, ...). The changelog is in English on every
+ * language of the site (`lang="en"`); its HTML is made at build time from the own changelog (src/lib/releases).
+ */
+import { Icon } from 'astro-icon/components';
+import { ICONS } from '../../config/nav';
+import { formatDate } from '../../i18n/format';
+import Localized from '../../i18n/Localized.astro';
+import T from '../../i18n/T.astro';
+import type { ChangeKind, Release } from '../../lib/releases/releases';
+import Button from '../ui/Button.astro';
+import Card from '../ui/Card.astro';
+import Chip from '../ui/Chip.astro';
+import IconBadge, { type IconTone } from '../ui/IconBadge.astro';
+
+interface Props {
+  release: Release;
+  /** The last stable release - «latest». */
+  latest: boolean;
+}
+
+const { release, latest } = Astro.props;
+
+const KINDS: Record<ChangeKind, { icon: string; tone: IconTone }> = {
+  Added: { icon: 'material-symbols:add-rounded', tone: 'success' },
+  Changed: { icon: 'material-symbols:edit-outline-rounded', tone: 'primary' },
+  Deprecated: { icon: 'material-symbols:schedule-outline-rounded', tone: 'neutral' },
+  Removed: { icon: 'material-symbols:remove-rounded', tone: 'neutral' },
+  Fixed: { icon: 'material-symbols:build-outline-rounded', tone: 'tertiary' },
+  Security: { icon: 'material-symbols:shield-lock-outline-rounded', tone: 'error' },
+};
+
+/** The HTML of the changelog: code and links in the colors of the site. */
+const PROSE =
+  '[&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_code]:rounded [&_code]:bg-surface-container-high ' +
+  '[&_code]:px-1 [&_code]:font-mono [&_code]:text-[0.9em]';
+---
+
+<Card as="article" class="flex flex-col gap-5" data-reveal>
+  <header class="flex flex-wrap items-center gap-x-3 gap-y-2">
+    <h3 class="text-2xl font-semibold tracking-tight" translate="no">
+      {release.version}
+    </h3>
+    {latest && (
+      <Chip tone="success" icon="material-symbols:check-circle-outline-rounded">
+        <T k="releases.latest" />
+      </Chip>
+    )}
+    {release.prerelease && (
+      <Chip tone="warning" icon="material-symbols:science-outline-rounded">
+        <T k="releases.test" />
+      </Chip>
+    )}
+    <span class="text-sm text-on-surface-variant">
+      <Localized format={(locale) => formatDate(locale, release.publishedAt)} />
+    </span>
+    <span class="flex-1"></span>
+    <Button href={release.pageUrl} external variant="text" size="sm" icon={ICONS.github}>
+      <T k="download.github" />
+    </Button>
+  </header>
+
+  <div lang="en" class:list={['flex flex-col gap-5', PROSE]}>
+    {release.notes.intro.map((paragraph) => (
+      <p class="text-pretty text-on-surface-variant" set:html={paragraph} />
+    ))}
+
+    {release.notes.sections.map(({ kind, items }) => (
+      <section class="flex flex-col gap-3">
+        <h4 class="flex items-center gap-2 font-semibold" translate="no">
+          <IconBadge icon={KINDS[kind].icon} tone={KINDS[kind].tone} size="sm" />
+          {kind}
+        </h4>
+        <ul class="flex flex-col gap-2 pl-1 text-sm text-on-surface-variant">
+          {items.map((item) => (
+            <li class="flex gap-2">
+              <Icon
+                name="material-symbols:circle"
+                class="mt-2 size-1.5 shrink-0 text-outline"
+                aria-hidden="true"
+              />
+              <span set:html={item} />
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</Card>

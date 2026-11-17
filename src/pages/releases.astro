@@ -1,11 +1,40 @@
 ---
-import PagePlaceholder from '../components/sections/PagePlaceholder.astro';
+/**
+ * Releases: the download block of the last stable release first (as on the home page), then the news - a card per
+ * published release, `rc` marked «test» (pass-docs: plan/steps/web/step_126.md).
+ */
+import DownloadBlock from '../components/download/DownloadBlock.astro';
+import ReleaseCard from '../components/releases/ReleaseCard.astro';
+import PageHeader from '../components/sections/PageHeader.astro';
+import Container from '../components/ui/Container.astro';
 import { navItem, ROUTES } from '../config/nav';
+import T from '../i18n/T.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getReleases } from '../lib/releases/releases';
 
 const { label, icon } = navItem(ROUTES.releases);
+const { all, latest } = await getReleases();
 ---
 
 <BaseLayout title={label}>
-  <PagePlaceholder title={label} icon={icon} />
+  <Container class="flex flex-col gap-12 pt-12 sm:pt-16">
+    <div class="flex flex-col gap-8">
+      <PageHeader title={label} icon={icon} />
+      <DownloadBlock />
+    </div>
+
+    <section class="flex flex-col gap-6" aria-labelledby="news">
+      <div class="flex flex-col gap-2">
+        <h2 id="news" class="text-2xl font-semibold tracking-tight sm:text-3xl">
+          <T k="releases.news.title" />
+        </h2>
+        <p class="text-on-surface-variant">
+          <T k="releases.news.text" />
+        </p>
+      </div>
+      {all.map((release) => (
+        <ReleaseCard release={release} latest={release === latest} />
+      ))}
+    </section>
+  </Container>
 </BaseLayout>
