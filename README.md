@@ -1,31 +1,13 @@
-# pass-web
+# KDBX Vault — website
 
-Сайт приложения — статический, Astro + Tailwind CSS + TypeScript. Репозиторий закрытый; само приложение и ядро —
-открытые.
+The source of the website of KDBX Vault, a free, open-source, offline password manager for KeePass (KDBX)
+databases, for Android and desktop.
 
-## Требования
+- Website: <https://bigtoestdev.github.io/kdbxvault/>
+- The app: [kdbx-vault](https://github.com/BigToEstDev/kdbx-vault) — downloads on its
+  [Releases](https://github.com/BigToEstDev/kdbx-vault/releases/latest) page
+- The engine: [kdbx-core](https://github.com/BigToEstDev/kdbx-core)
 
-- Node.js 26 (`.nvmrc`), npm.
+## Licence
 
-## Команды
-
-| Команда                           | Что делает                                                      |
-| --------------------------------- | --------------------------------------------------------------- |
-| `npm install`                     | установить зависимости (версии закреплены, `package-lock.json`) |
-| `npm run dev`                     | dev-сервер, `http://localhost:4321`                             |
-| `npm run build`                   | сборка в статику — `dist/`                                      |
-| `npm run preview`                 | открыть собранный `dist/`                                       |
-| `npm run check`                   | проверка типов (`astro check`)                                  |
-| `npm run lint`                    | ESLint (TS, Astro, доступность)                                 |
-| `npm run format` / `format:check` | Prettier: исправить / проверить                                 |
-| `npm run verify`                  | всё перед коммитом: check, lint, format:check, build            |
-
-## Структура
-
-- `src/pages/` — страницы (маршрут = путь файла).
-- `src/styles/global.css` — Tailwind.
-- `public/` — файлы как есть (иконки).
-
-## Переменные
-
-URL и прочие настройки — в `.env` (образец — `.env.example`), не в коде.
+Copyright (C) 2026 BigToEstDev. All rights reserved — see [`LICENSE`](LICENSE).
