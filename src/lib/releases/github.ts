@@ -4,9 +4,9 @@
  * (60 requests an hour without it). No answer or a wrong one - an exception: the build fails, an empty page is not
  * published.
  */
-import { PUBLIC_GITHUB_APP_URL } from 'astro:env/client';
 import { GH_API_URL, GH_RAW_URL, GITHUB_TOKEN } from 'astro:env/server';
 import { z } from 'astro/zod';
+import { SITE } from '../../config/site';
 
 const API_URL = GH_API_URL.replace(/\/+$/, '');
 const RAW_URL = GH_RAW_URL.replace(/\/+$/, '');
@@ -15,13 +15,7 @@ const RAW_URL = GH_RAW_URL.replace(/\/+$/, '');
 const CHANGELOG_PATH = 'CHANGELOG.md';
 
 /** `owner/repo` of the app repository. */
-const REPO = repoOf(PUBLIC_GITHUB_APP_URL);
-
-function repoOf(url: string): string {
-  const [owner, repo] = new URL(url).pathname.split('/').filter(Boolean);
-  if (!owner || !repo) throw new Error(`releases: not a repository URL - ${url}`);
-  return `${owner}/${repo}`;
-}
+const REPO = SITE.githubAppRepo;
 
 const assetSchema = z.object({
   name: z.string(),
@@ -47,7 +41,8 @@ async function request(url: string, accept: string): Promise<Response> {
   if (GITHUB_TOKEN) headers.Authorization = `Bearer ${GITHUB_TOKEN}`;
   const response = await fetch(url, { headers });
   if (!response.ok) {
-    throw new Error(`releases: ${url} - ${response.status} ${response.statusText}`);
+    const reason = (await response.text()).slice(0, 300);
+    throw new Error(`releases: ${url} - ${response.status} ${response.statusText} ${reason}`);
   }
   return response;
 }

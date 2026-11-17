@@ -1,0 +1,42 @@
+---
+/**
+ * Copies `text` to the clipboard: an icon button; after a copy - the check icon for a moment (src/scripts/copy.ts).
+ * `label` - a key of the dictionaries, the accessible name in every language.
+ */
+import { Icon } from 'astro-icon/components';
+import { i18nAttrs, type MessageKey } from '../../i18n/locales';
+import { iconButtonClasses, type ButtonSize } from './button-styles';
+
+interface Props {
+  text: string;
+  label: MessageKey;
+  size?: ButtonSize;
+  class?: string;
+}
+
+const { text, label, size = 'sm', class: className } = Astro.props;
+---
+
+<button
+  type="button"
+  class:list={['group', iconButtonClasses('standard', size), className]}
+  data-copy-text={text}
+  {...i18nAttrs({ 'aria-label': label, title: label })}
+>
+  <Icon
+    name="material-symbols:content-copy-outline-rounded"
+    class="size-5 group-data-copied:hidden"
+    aria-hidden="true"
+  />
+  <Icon
+    name="material-symbols:check-rounded"
+    class="hidden size-5 text-strength-strong group-data-copied:block"
+    aria-hidden="true"
+  />
+</button>
+
+<script>
+  import { initCopyButtons } from '../../scripts/copy';
+
+  initCopyButtons();
+</script>

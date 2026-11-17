@@ -1,0 +1,92 @@
+---
+/**
+ * The download block - the home page and the first section of /releases: the last stable release (never `rc`) -
+ * its version, date and downloads, a tile per platform (the installer, its SHA-256), how to check a file. No stable
+ * release yet - the tiles «soon» and the way to the test builds. The data - GitHub at build time
+ * (src/lib/releases).
+ */
+import { ICONS, ROUTES } from '../../config/nav';
+import { PLATFORMS } from '../../config/platforms';
+import { formatDate, formatPlural } from '../../i18n/format';
+import Localized from '../../i18n/Localized.astro';
+import T from '../../i18n/T.astro';
+import { getReleases } from '../../lib/releases/releases';
+import Button from '../ui/Button.astro';
+import Card from '../ui/Card.astro';
+import Chip from '../ui/Chip.astro';
+import PlatformTile from './PlatformTile.astro';
+import VerifyHelp from './VerifyHelp.astro';
+
+interface Props {
+  /** The link «all releases» - not on /releases itself. */
+  showAllReleases?: boolean;
+}
+
+const { showAllReleases = false } = Astro.props;
+
+const { latest, all, downloads } = await getReleases();
+---
+
+<Card class="relative flex flex-col gap-6 overflow-hidden" data-reveal="scale">
+  <div
+    class="pointer-events-none absolute -top-24 -right-24 size-72 rounded-full bg-primary/15 blur-3xl"
+    aria-hidden="true"
+  ></div>
+
+  {latest ? (
+    <div class="relative flex flex-wrap items-center gap-2">
+      <Chip tone="primary" icon="material-symbols:sell-outline-rounded">
+        <span translate="no">{latest.version}</span>
+      </Chip>
+      <Chip icon="material-symbols:calendar-today-outline-rounded">
+        <Localized format={(locale) => formatDate(locale, latest.publishedAt)} />
+      </Chip>
+      <Chip icon={ICONS.download}>
+        <Localized format={(locale) => formatPlural(locale, 'download.count', downloads)} />
+      </Chip>
+      <span class="flex-1"></span>
+      {showAllReleases && (
+        <Button
+          href={ROUTES.releases}
+          variant="text"
+          size="sm"
+          iconEnd="material-symbols:arrow-forward-rounded"
+        >
+          <T k="download.allReleases" />
+        </Button>
+      )}
+      <Button href={latest.pageUrl} external variant="text" size="sm" icon={ICONS.github}>
+        <T k="download.github" />
+      </Button>
+    </div>
+  ) : (
+    all.length > 0 && (
+      <div class="relative flex flex-wrap items-center gap-3">
+        <p class="flex-1 text-sm text-on-surface-variant">
+          <T k="download.noStable" />
+        </p>
+        {showAllReleases && (
+          <Button
+            href={ROUTES.releases}
+            variant="tonal"
+            size="sm"
+            iconEnd="material-symbols:arrow-forward-rounded"
+          >
+            <T k="download.allReleases" />
+          </Button>
+        )}
+      </div>
+    )
+  )}
+
+  <ul class="relative grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    {PLATFORMS.map((platform) => (
+      <PlatformTile
+        platform={platform}
+        file={latest?.files.find((file) => file.platform === platform.id)}
+      />
+    ))}
+  </ul>
+
+  {latest && <VerifyHelp release={latest} />}
+</Card>

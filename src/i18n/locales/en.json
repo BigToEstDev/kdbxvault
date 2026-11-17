@@ -121,8 +121,7 @@
     "download": {
       "eyebrow": "Download",
       "title": "Get {app}",
-      "text": "Installers will appear with the first release.",
-      "soon": "Soon",
+      "text": "Free - for Android and desktop. The files are taken straight from GitHub Releases.",
       "warning": {
         "title": "The system will warn you - that is expected",
         "text": "Installers are not signed yet: signing licenses cost money. Windows SmartScreen and macOS Gatekeeper will show a warning - the code is open, you can check it.",
@@ -192,5 +191,32 @@
     "system": "System",
     "light": "Light",
     "dark": "Dark"
+  },
+  "download": {
+    "allReleases": "All releases",
+    "github": "On GitHub",
+    "count": {
+      "one": "{n} download",
+      "few": "{n} downloads",
+      "many": "{n} downloads",
+      "other": "{n} downloads"
+    },
+    "soon": "Soon",
+    "noStable": "No stable version yet - test builds are on the releases page.",
+    "sha": "SHA-256",
+    "copySha": "Copy SHA-256",
+    "copyCommand": "Copy the command",
+    "verify": {
+      "title": "How to check a file",
+      "text": "Compute SHA-256 of the downloaded file and compare it with the one under its button - they must match.",
+      "apk": "The APK is signed with our certificate. Its SHA-256 - check with apksigner (Android SDK): a different one means the file is not ours.",
+      "copyCert": "Copy the certificate SHA-256",
+      "attestation": "Every file has a build attestation - proof that GitHub Actions built it from the source code:"
+    },
+    "obtainium": {
+      "text": "Updates on their own - via Obtainium.",
+      "add": "Add to Obtainium",
+      "about": "What is Obtainium"
+    }
   }
 }

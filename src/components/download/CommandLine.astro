@@ -1,0 +1,20 @@
+---
+/** A command or a value to type or compare: monospace, wraps, with copy. Not translated. */
+import type { MessageKey } from '../../i18n/locales';
+import CopyButton from '../ui/CopyButton.astro';
+
+interface Props {
+  text: string;
+  /** The name of the copy button - a key of the dictionaries. */
+  copyLabel?: MessageKey;
+}
+
+const { text, copyLabel = 'download.copyCommand' } = Astro.props;
+---
+
+<div class="flex items-center gap-1 rounded-md bg-surface-container-high py-1 pr-1 pl-3">
+  <code class="min-w-0 flex-1 font-mono text-xs break-all" translate="no">
+    {text}
+  </code>
+  <CopyButton text={text} label={copyLabel} />
+</div>

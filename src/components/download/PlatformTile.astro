@@ -1,0 +1,76 @@
+---
+/**
+ * A platform of the download block: with a file - a link to the installer (its type and size) and its SHA-256 with
+ * copy; without one - a disabled tile «soon». Android - also how to get updates (Obtainium).
+ */
+import { Icon } from 'astro-icon/components';
+import { ICONS } from '../../config/nav';
+import type { Platform } from '../../config/platforms';
+import { formatSize } from '../../i18n/format';
+import Localized from '../../i18n/Localized.astro';
+import T from '../../i18n/T.astro';
+import type { ReleaseFile } from '../../lib/releases/releases';
+import Chip from '../ui/Chip.astro';
+import CopyButton from '../ui/CopyButton.astro';
+import ObtainiumHint from './ObtainiumHint.astro';
+
+interface Props {
+  platform: Platform;
+  file?: ReleaseFile | undefined;
+}
+
+const { platform, file } = Astro.props;
+
+/** `.msi` of `kdbx-vault-1.0.0-windows-x64.msi`. */
+const type = file?.name.slice(file.name.lastIndexOf('.'));
+---
+
+<li class="flex flex-col gap-3 rounded-lg border border-outline/20 bg-surface-container p-4">
+  {file ? (
+    <a
+      href={file.url}
+      download
+      class="group flex items-center gap-3 rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+    >
+      <Icon name={platform.icon} class="size-7 shrink-0" aria-hidden="true" />
+      <span class="flex flex-1 flex-col">
+        <span class="font-semibold group-hover:text-primary" translate="no">
+          {platform.name}
+        </span>
+        <span class="text-xs text-on-surface-variant">
+          <span translate="no">{type}</span> ·{' '}
+          <Localized format={(locale) => formatSize(locale, file.size)} />
+        </span>
+      </span>
+      <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary shadow-sm transition-shadow group-hover:shadow-md">
+        <Icon name={ICONS.download} class="size-5" aria-hidden="true" />
+      </span>
+    </a>
+  ) : (
+    <div class="flex items-center gap-3 opacity-70">
+      <Icon name={platform.icon} class="size-7 shrink-0" aria-hidden="true" />
+      <span class="flex-1 font-semibold" translate="no">
+        {platform.name}
+      </span>
+      <Chip tone="neutral">
+        <T k="download.soon" />
+      </Chip>
+    </div>
+  )}
+
+  {file && (
+    <div class="flex items-start gap-1 border-t border-outline/15 pt-3">
+      <div class="flex min-w-0 flex-1 flex-col gap-1">
+        <span class="text-xs font-medium text-on-surface-variant">
+          <T k="download.sha" />
+        </span>
+        <code class="font-mono text-[11px] leading-snug break-all text-on-surface-variant">
+          {file.sha256}
+        </code>
+      </div>
+      <CopyButton text={file.sha256} label="download.copySha" />
+    </div>
+  )}
+
+  {file && platform.id === 'android' && <ObtainiumHint />}
+</li>
