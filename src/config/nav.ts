@@ -35,7 +35,6 @@ export const ROUTES = {
   releases: withBase('/releases'),
   donate: withBase('/donate'),
   privacy: withBase('/privacy'),
-  terms: withBase('/terms'),
   download: withBase('/#download'),
 };
 
@@ -69,7 +68,6 @@ export const FOOTER_NAV: readonly NavItem[] = [
     label: 'footer.privacy',
     icon: 'material-symbols:shield-lock-outline-rounded',
   },
-  { href: ROUTES.terms, label: 'footer.terms', icon: 'material-symbols:gavel-rounded' },
   { ...GITHUB, label: 'footer.source' },
 ];
 

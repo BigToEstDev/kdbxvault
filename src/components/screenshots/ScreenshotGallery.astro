@@ -1,0 +1,79 @@
+---
+/**
+ * A set of screenshots (src/config/screenshots.ts): the heading with the icon of the platform and a grid of shots,
+ * each with its caption. A shot is a link to its large image - the lightbox opens it (components/ui/Lightbox.astro);
+ * without scripts the link opens the image itself. The images - AVIF / WebP of the needed widths, lazy.
+ */
+import { Icon } from 'astro-icon/components';
+import { getImage, Picture } from 'astro:assets';
+import type { ScreenshotSet } from '../../config/screenshots';
+import { i18nAttrs } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+
+interface Props {
+  set: ScreenshotSet;
+}
+
+const { set } = Astro.props;
+
+const phone = set.id === 'android';
+const widths = phone ? [360, 540, 1080] : [640, 960, 1520];
+const sizes = phone
+  ? '(min-width: 1024px) 22vw, (min-width: 640px) 30vw, 45vw'
+  : '(min-width: 1024px) 45vw, 92vw';
+
+const shots = await Promise.all(
+  set.shots.map(async (shot) => {
+    // `alt` - in the default language; the others go to `data-i18n-attrs` (src/scripts/locale.ts swaps it)
+    const { alt = '', ...altLocales } = i18nAttrs({ alt: shot.caption });
+    return {
+      ...shot,
+      alt,
+      altLocales,
+      large: await getImage({ src: shot.image, format: 'webp' }),
+    };
+  }),
+);
+---
+
+<section class="flex flex-col gap-6" aria-labelledby={`shots-${set.id}`}>
+  <h2 id={`shots-${set.id}`} class="flex items-center gap-3 text-2xl font-semibold tracking-tight">
+    <span class="inline-flex size-10 items-center justify-center rounded-full bg-on-surface/6">
+      <Icon name={set.icon} class="size-5" aria-hidden="true" />
+    </span>
+    <T k={set.title} />
+  </h2>
+
+  <ul
+    class:list={[
+      'grid gap-4',
+      phone ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4' : 'lg:grid-cols-2',
+    ]}
+  >
+    {shots.map(({ image, caption, large, alt, altLocales }) => (
+      <li>
+        <figure class="flex flex-col gap-2" data-reveal>
+          <a
+            href={large.src}
+            class="block overflow-hidden rounded-lg border border-outline/20 bg-surface-container shadow-sm transition-[border-color,box-shadow] duration-200 hover:border-primary/40 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            data-lightbox-item={set.id}
+          >
+            <Picture
+              src={image}
+              formats={['avif', 'webp']}
+              widths={widths}
+              sizes={sizes}
+              loading="lazy"
+              class="h-auto w-full"
+              alt={alt}
+              {...altLocales}
+            />
+          </a>
+          <figcaption class="text-center text-sm text-on-surface-variant">
+            <T k={caption} />
+          </figcaption>
+        </figure>
+      </li>
+    ))}
+  </ul>
+</section>
