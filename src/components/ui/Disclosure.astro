@@ -1,0 +1,41 @@
+---
+/**
+ * A question with a folded answer (<details>): an icon, the title - a key of the dictionaries - and a chevron; the
+ * answer - the slot. Works without scripts and from the keyboard.
+ */
+import { Icon } from 'astro-icon/components';
+import type { MessageKey } from '../../i18n/locales';
+import T from '../../i18n/T.astro';
+
+interface Props {
+  title: MessageKey;
+  icon: string;
+  class?: string;
+}
+
+const { title, icon, class: className } = Astro.props;
+---
+
+<details
+  class:list={[
+    'group rounded-lg border border-outline/15 bg-surface-container-low/80 shadow-sm backdrop-blur-sm',
+    className,
+  ]}
+>
+  <summary class="flex cursor-pointer list-none items-center gap-3 rounded-lg p-4 font-semibold select-none hover:bg-on-surface/4 focus-visible:outline-2 focus-visible:outline-primary sm:px-5 [&::-webkit-details-marker]:hidden">
+    <span class="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+      <Icon name={icon} class="size-5" aria-hidden="true" />
+    </span>
+    <span class="flex-1">
+      <T k={title} />
+    </span>
+    <Icon
+      name="material-symbols:expand-more-rounded"
+      class="size-6 shrink-0 text-on-surface-variant transition-transform group-open:rotate-180"
+      aria-hidden="true"
+    />
+  </summary>
+  <div class="px-4 pb-5 sm:px-5">
+    <slot />
+  </div>
+</details>

@@ -1,15 +1,15 @@
 ---
 /**
- * Download (`#download` - the top bar leads here): a button per platform - disabled «soon» until the first release -
- * and the warning about unsigned installers, with the way to help (donations for the licenses).
+ * Download (`#download` - the top bar leads here): the download block of the last stable release
+ * (components/download) and the warning about unsigned installers, with the way to help (donations for the licenses).
  */
 import { Icon } from 'astro-icon/components';
 import { ROUTES } from '../../config/nav';
-import { PLATFORMS } from '../../config/platforms';
 import T from '../../i18n/T.astro';
 import Button from '../ui/Button.astro';
 import Card from '../ui/Card.astro';
 import Chip from '../ui/Chip.astro';
+import DownloadBlock from '../download/DownloadBlock.astro';
 import Section from '../sections/Section.astro';
 ---
 
@@ -19,31 +19,7 @@ import Section from '../sections/Section.astro';
   title="home.download.title"
   text="home.download.text"
 >
-  <Card class="relative overflow-hidden" data-reveal="scale">
-    <div
-      class="pointer-events-none absolute -top-24 -right-24 size-72 rounded-full bg-primary/15 blur-3xl"
-      aria-hidden="true"
-    ></div>
-    <ul class="relative grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      {PLATFORMS.map(({ name, icon }) => (
-        <li>
-          <button
-            type="button"
-            disabled
-            class="flex w-full items-center gap-3 rounded-lg border border-outline/20 bg-surface-container p-4 text-left opacity-80"
-          >
-            <Icon name={icon} class="size-7 shrink-0" aria-hidden="true" />
-            <span class="flex-1 font-semibold" translate="no">
-              {name}
-            </span>
-            <Chip tone="neutral">
-              <T k="home.download.soon" />
-            </Chip>
-          </button>
-        </li>
-      ))}
-    </ul>
-  </Card>
+  <DownloadBlock showAllReleases />
 
   <Card
     class="flex flex-col gap-4 border-strength-medium/40 bg-tertiary-container/40 sm:flex-row sm:items-start"

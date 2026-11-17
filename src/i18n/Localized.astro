@@ -1,0 +1,19 @@
+---
+/**
+ * A text made for every language at build time - a number, a size, a date (./format.ts): a span per language, the
+ * current one shown by CSS, like T.astro.
+ */
+import { LOCALES, type Locale } from './locales';
+
+interface Props {
+  format: (locale: Locale) => string;
+}
+
+const { format } = Astro.props;
+---
+
+{LOCALES.map(({ code }) => (
+  <span lang={code} data-i18n-lang={code}>
+    {format(code)}
+  </span>
+))}

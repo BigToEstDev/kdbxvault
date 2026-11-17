@@ -1,0 +1,32 @@
+---
+/**
+ * «How to get updates on Android» - a question of the download block: the site gives the APK, Obtainium follows the
+ * releases on GitHub and updates the app. «Add» opens it on the phone with the repository filled in.
+ */
+import { SITE } from '../../config/site';
+import T from '../../i18n/T.astro';
+import Button from '../ui/Button.astro';
+import Disclosure from '../ui/Disclosure.astro';
+---
+
+<Disclosure title="download.obtainium.title" icon="material-symbols:autorenew-rounded">
+  <div class="flex flex-col gap-4 text-sm text-on-surface-variant">
+    <p>
+      <T k="download.obtainium.text" />
+    </p>
+    <div class="flex flex-wrap gap-2">
+      <Button href={SITE.obtainiumAddUrl} variant="tonal" size="sm" icon="simple-icons:android">
+        <T k="download.obtainium.add" />
+      </Button>
+      <Button
+        href={SITE.obtainiumUrl}
+        external
+        variant="text"
+        size="sm"
+        iconEnd="material-symbols:open-in-new-rounded"
+      >
+        <T k="download.obtainium.about" />
+      </Button>
+    </div>
+  </div>
+</Disclosure>

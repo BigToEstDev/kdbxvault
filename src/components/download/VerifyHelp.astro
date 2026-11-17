@@ -1,0 +1,66 @@
+---
+/**
+ * «How to check a file» - a question of the download block: SHA-256 by the commands of each system with the real
+ * names of the files, the certificate of the APK, the build attestation.
+ */
+import { SITE } from '../../config/site';
+import T from '../../i18n/T.astro';
+import type { Release } from '../../lib/releases/releases';
+import Disclosure from '../ui/Disclosure.astro';
+import CommandLine from './CommandLine.astro';
+
+interface Props {
+  release: Release;
+}
+
+const { release } = Astro.props;
+
+const fileOf = (target: string) => release.files.find((file) => file.target === target)?.name;
+
+const windows = fileOf('windows-x64');
+const macos = fileOf('macos-arm64');
+const linux = fileOf('linux-amd64');
+const apk = fileOf('android');
+const any = release.files[0]?.name ?? '<file>';
+
+const hashCommands = [
+  windows && { system: 'Windows', command: `certutil -hashfile ${windows} SHA256` },
+  macos && { system: 'macOS', command: `shasum -a 256 ${macos}` },
+  linux && { system: 'Linux', command: `sha256sum ${linux}` },
+].filter((entry) => !!entry);
+---
+
+<Disclosure title="download.verify.title" icon="material-symbols:verified-user-outline-rounded">
+  <div class="flex flex-col gap-5 text-sm text-on-surface-variant">
+    <div class="flex flex-col gap-2">
+      <p>
+        <T k="download.verify.text" />
+      </p>
+      {hashCommands.map(({ system, command }) => (
+        <div class="flex flex-col gap-1">
+          <span class="text-xs font-medium" translate="no">
+            {system}
+          </span>
+          <CommandLine text={command} />
+        </div>
+      ))}
+    </div>
+
+    {apk && (
+      <div class="flex flex-col gap-2">
+        <p>
+          <T k="download.verify.apk" />
+        </p>
+        <CommandLine text={release.apkCertSha256} copyLabel="download.verify.copyCert" />
+        <CommandLine text={`apksigner verify --print-certs ${apk}`} />
+      </div>
+    )}
+
+    <div class="flex flex-col gap-2">
+      <p>
+        <T k="download.verify.attestation" />
+      </p>
+      <CommandLine text={`gh attestation verify ${any} -R ${SITE.githubAppRepo}`} />
+    </div>
+  </div>
+</Disclosure>
