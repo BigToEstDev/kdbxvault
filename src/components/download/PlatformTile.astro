@@ -1,7 +1,7 @@
 ---
 /**
- * A platform of the download block: with a file - a link to the installer (its type and size) and its SHA-256 with
- * copy; without one - a disabled tile «soon». Android - also how to get updates (Obtainium).
+ * A platform of the download block: with a file - the whole tile is the link to the installer (its type and size),
+ * under it SHA-256 folded with copy; without one - a disabled tile «soon».
  */
 import { Icon } from 'astro-icon/components';
 import { ICONS } from '../../config/nav';
@@ -12,7 +12,6 @@ import T from '../../i18n/T.astro';
 import type { ReleaseFile } from '../../lib/releases/releases';
 import Chip from '../ui/Chip.astro';
 import CopyButton from '../ui/CopyButton.astro';
-import ObtainiumHint from './ObtainiumHint.astro';
 
 interface Props {
   platform: Platform;
@@ -23,18 +22,30 @@ const { platform, file } = Astro.props;
 
 /** `.msi` of `kdbx-vault-1.0.0-windows-x64.msi`. */
 const type = file?.name.slice(file.name.lastIndexOf('.'));
+
+const LOGO =
+  'inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-on-surface/6 text-on-surface';
 ---
 
-<li class="flex flex-col gap-3 rounded-lg border border-outline/20 bg-surface-container p-4">
+<li
+  class:list={[
+    'flex flex-col overflow-hidden rounded-lg border bg-surface-container',
+    file
+      ? 'border-outline/20 transition-[border-color,box-shadow] duration-200 hover:border-primary/40 hover:shadow-md'
+      : 'border-outline/15',
+  ]}
+>
   {file ? (
     <a
       href={file.url}
       download
-      class="group flex items-center gap-3 rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+      class="group flex items-center gap-3 p-4 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
     >
-      <Icon name={platform.icon} class="size-7 shrink-0" aria-hidden="true" />
-      <span class="flex flex-1 flex-col">
-        <span class="font-semibold group-hover:text-primary" translate="no">
+      <span class={LOGO}>
+        <Icon name={platform.icon} class="size-6" aria-hidden="true" />
+      </span>
+      <span class="flex min-w-0 flex-1 flex-col">
+        <span class="font-semibold" translate="no">
           {platform.name}
         </span>
         <span class="text-xs text-on-surface-variant">
@@ -42,13 +53,15 @@ const type = file?.name.slice(file.name.lastIndexOf('.'));
           <Localized format={(locale) => formatSize(locale, file.size)} />
         </span>
       </span>
-      <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary shadow-sm transition-shadow group-hover:shadow-md">
+      <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary shadow-sm transition-transform duration-200 group-hover:scale-110">
         <Icon name={ICONS.download} class="size-5" aria-hidden="true" />
       </span>
     </a>
   ) : (
-    <div class="flex items-center gap-3 opacity-70">
-      <Icon name={platform.icon} class="size-7 shrink-0" aria-hidden="true" />
+    <div class="flex items-center gap-3 p-4 opacity-70">
+      <span class={LOGO}>
+        <Icon name={platform.icon} class="size-6" aria-hidden="true" />
+      </span>
       <span class="flex-1 font-semibold" translate="no">
         {platform.name}
       </span>
@@ -59,18 +72,21 @@ const type = file?.name.slice(file.name.lastIndexOf('.'));
   )}
 
   {file && (
-    <div class="flex items-start gap-1 border-t border-outline/15 pt-3">
-      <div class="flex min-w-0 flex-1 flex-col gap-1">
-        <span class="text-xs font-medium text-on-surface-variant">
-          <T k="download.sha" />
-        </span>
-        <code class="font-mono text-[11px] leading-snug break-all text-on-surface-variant">
+    <details class="group/sha border-t border-outline/15">
+      <summary class="flex cursor-pointer list-none items-center gap-1 px-4 py-2 text-xs font-medium text-on-surface-variant select-none hover:bg-on-surface/4 hover:text-on-surface focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
+        <T k="download.sha" />
+        <Icon
+          name="material-symbols:expand-more-rounded"
+          class="size-4 transition-transform group-open/sha:rotate-180"
+          aria-hidden="true"
+        />
+      </summary>
+      <div class="flex items-start gap-1 px-4 pb-3">
+        <code class="min-w-0 flex-1 pt-1.5 font-mono text-[11px] leading-snug break-all text-on-surface-variant">
           {file.sha256}
         </code>
+        <CopyButton text={file.sha256} label="download.copySha" />
       </div>
-      <CopyButton text={file.sha256} label="download.copySha" />
-    </div>
+    </details>
   )}
-
-  {file && platform.id === 'android' && <ObtainiumHint />}
 </li>

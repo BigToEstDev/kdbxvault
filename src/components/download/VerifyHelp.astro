@@ -1,12 +1,12 @@
 ---
 /**
- * «How to check a file» - folded (<details>): SHA-256 by the commands of each system with the real names of the
- * files, the certificate of the APK, the build attestation.
+ * «How to check a file» - a question of the download block: SHA-256 by the commands of each system with the real
+ * names of the files, the certificate of the APK, the build attestation.
  */
-import { Icon } from 'astro-icon/components';
 import { SITE } from '../../config/site';
 import T from '../../i18n/T.astro';
 import type { Release } from '../../lib/releases/releases';
+import Disclosure from '../ui/Disclosure.astro';
 import CommandLine from './CommandLine.astro';
 
 interface Props {
@@ -30,24 +30,8 @@ const hashCommands = [
 ].filter((entry) => !!entry);
 ---
 
-<details class="group rounded-lg border border-outline/20 bg-surface-container/60">
-  <summary class="flex cursor-pointer list-none items-center gap-3 p-4 font-semibold select-none focus-visible:outline-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
-    <Icon
-      name="material-symbols:verified-user-outline-rounded"
-      class="size-5 shrink-0 text-primary"
-      aria-hidden="true"
-    />
-    <span class="flex-1">
-      <T k="download.verify.title" />
-    </span>
-    <Icon
-      name="material-symbols:expand-more-rounded"
-      class="size-6 shrink-0 text-on-surface-variant transition-transform group-open:rotate-180"
-      aria-hidden="true"
-    />
-  </summary>
-
-  <div class="flex flex-col gap-5 px-4 pb-4 text-sm text-on-surface-variant">
+<Disclosure title="download.verify.title" icon="material-symbols:verified-user-outline-rounded">
+  <div class="flex flex-col gap-5 text-sm text-on-surface-variant">
     <div class="flex flex-col gap-2">
       <p>
         <T k="download.verify.text" />
@@ -79,4 +63,4 @@ const hashCommands = [
       <CommandLine text={`gh attestation verify ${any} -R ${SITE.githubAppRepo}`} />
     </div>
   </div>
-</details>
+</Disclosure>

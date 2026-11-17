@@ -215,7 +215,8 @@
       "attestation": "Every file has a build attestation - proof that GitHub Actions built it from the source code:"
     },
     "obtainium": {
-      "text": "Updates on their own - via Obtainium.",
+      "title": "How to get updates on Android",
+      "text": "The site gives the APK, but the app does not update itself. Obtainium - a free open-source app - follows the releases of {app} on GitHub and installs new versions.",
       "add": "Add to Obtainium",
       "about": "What is Obtainium"
     }
