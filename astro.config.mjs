@@ -33,6 +33,20 @@ export default defineConfig({
         startsWith: 'https://t.me/',
         optional: true,
       }),
+      // The API of GitHub and its raw files - the releases and the changelog of the app at build time; not in
+      // the pages.
+      GH_API_URL: envField.string({
+        context: 'server',
+        access: 'public',
+        url: true,
+        startsWith: 'https://',
+      }),
+      GH_RAW_URL: envField.string({
+        context: 'server',
+        access: 'public',
+        url: true,
+        startsWith: 'https://',
+      }),
       // Optional: the token of GitHub for the releases at build time (CI - the token of the run); without it the
       // API gives 60 requests an hour. Never in the pages.
       GITHUB_TOKEN: envField.string({

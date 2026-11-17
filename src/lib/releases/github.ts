@@ -5,12 +5,11 @@
  * published.
  */
 import { PUBLIC_GITHUB_APP_URL } from 'astro:env/client';
-import { GITHUB_TOKEN } from 'astro:env/server';
+import { GH_API_URL, GH_RAW_URL, GITHUB_TOKEN } from 'astro:env/server';
 import { z } from 'astro/zod';
 
-/** The hosts of GitHub - fixed by GitHub, not settings of the site. */
-const API_URL = 'https://api.github.com';
-const RAW_URL = 'https://raw.githubusercontent.com';
+const API_URL = GH_API_URL.replace(/\/+$/, '');
+const RAW_URL = GH_RAW_URL.replace(/\/+$/, '');
 
 /** The changelog of the app - in the default branch (`HEAD`), one file for every version. */
 const CHANGELOG_PATH = 'CHANGELOG.md';
