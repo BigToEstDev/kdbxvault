@@ -27,7 +27,8 @@
       "title": "nothing extra",
       "subscriptions": "No subscriptions or payments",
       "accounts": "No sign-up or account",
-      "ads": "No ads or trackers"
+      "ads": "No ads or trackers",
+      "downloads": "from GitHub Releases - no tracking"
     },
     "privacy": {
       "eyebrow": "Privacy",

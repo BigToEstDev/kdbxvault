@@ -1,10 +1,15 @@
 ---
 /**
  * «Nothing extra»: one panel - a big 0 at the top left with its caption, under it what the zero counts - no
- * subscriptions, no sign-up, no ads and trackers - each with a solid icon.
+ * subscriptions, no sign-up, no ads and trackers - each with a solid icon. At the top right - the downloads of the
+ * installers of every release (GitHub Releases at build time); none yet - not shown.
  */
+import { ICONS } from '../../config/nav';
+import { formatPlural } from '../../i18n/format';
 import type { MessageKey } from '../../i18n/locales';
+import Localized from '../../i18n/Localized.astro';
 import T from '../../i18n/T.astro';
+import { getReleases } from '../../lib/releases/releases';
 import Card from '../ui/Card.astro';
 import Container from '../ui/Container.astro';
 import IconBadge, { type IconTone } from '../ui/IconBadge.astro';
@@ -26,6 +31,8 @@ const NONE: readonly { label: MessageKey; icon: string; tone: IconTone }[] = [
     tone: 'secondary',
   },
 ];
+
+const { downloads } = await getReleases();
 ---
 
 <section class="pt-20 sm:pt-28">
@@ -47,6 +54,22 @@ const NONE: readonly { label: MessageKey; icon: string; tone: IconTone }[] = [
         <span class="text-2xl font-semibold text-balance sm:text-3xl">
           <T k="home.stats.title" />
         </span>
+        {downloads > 0 && (
+          <div
+            class="flex items-center gap-3 self-center rounded-lg bg-surface-container/70 px-4 py-3 sm:ml-auto"
+            data-reveal
+          >
+            <IconBadge icon={ICONS.download} tone="primary" solid size="lg" />
+            <div class="flex flex-col">
+              <span class="text-xl font-semibold tabular-nums">
+                <Localized format={(locale) => formatPlural(locale, 'download.count', downloads)} />
+              </span>
+              <span class="text-sm text-on-surface-variant">
+                <T k="home.stats.downloads" />
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       <ul class="relative grid gap-4 sm:grid-cols-3">
