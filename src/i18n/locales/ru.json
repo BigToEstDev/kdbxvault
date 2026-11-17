@@ -227,5 +227,31 @@
       "title": "Что нового",
       "text": "Все релизы приложения - из его changelog, на английском."
     }
+  },
+  "screenshots": {
+    "desktop": {
+      "title": "ПК · Windows",
+      "welcome": "Открытие базы",
+      "entries": "Записи",
+      "edit-entry": "Правка записи",
+      "recycle-bin": "Корзина",
+      "settings-security": "Настройки: безопасность",
+      "settings-appearance": "Настройки: оформление",
+      "about": "О приложении"
+    },
+    "android": {
+      "title": "Android",
+      "unlock": "Открытие базы",
+      "main-screen": "Группы и записи",
+      "folder": "Группа",
+      "entry-read": "Запись",
+      "entry-history": "История записи",
+      "settings": "Настройки",
+      "about": "О приложении"
+    }
+  },
+  "lightbox": {
+    "previous": "Предыдущий",
+    "next": "Следующий"
   }
 }

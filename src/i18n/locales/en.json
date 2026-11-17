@@ -227,5 +227,31 @@
       "title": "What's new",
       "text": "Every release of the app - from its changelog."
     }
+  },
+  "screenshots": {
+    "desktop": {
+      "title": "Desktop · Windows",
+      "welcome": "Open a database",
+      "entries": "Entries",
+      "edit-entry": "Edit an entry",
+      "recycle-bin": "Recycle bin",
+      "settings-security": "Settings: security",
+      "settings-appearance": "Settings: appearance",
+      "about": "About"
+    },
+    "android": {
+      "title": "Android",
+      "unlock": "Open a database",
+      "main-screen": "Groups and entries",
+      "folder": "A group",
+      "entry-read": "An entry",
+      "entry-history": "Entry history",
+      "settings": "Settings",
+      "about": "About"
+    }
+  },
+  "lightbox": {
+    "previous": "Previous",
+    "next": "Next"
   }
 }

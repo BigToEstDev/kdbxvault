@@ -1,0 +1,107 @@
+---
+/**
+ * The large view of an image, on a modal <dialog> - one per page. Opens on a click of a link with
+ * `data-lightbox-item={group}` (its `href` - the large image; its <figure> - the caption); the arrows (buttons and
+ * the keys ← →) go through the same group; Esc, the button or a click beside the image closes it. Without scripts
+ * the links open the images themselves.
+ */
+import IconButton from './IconButton.astro';
+---
+
+<dialog
+  class="lightbox m-0 h-dvh max-h-none w-screen max-w-none bg-transparent p-0 text-on-surface"
+  aria-modal="true"
+  data-lightbox
+>
+  <div
+    class="flex h-full flex-col items-center justify-center gap-3 p-4 sm:p-8"
+    data-lightbox-backdrop
+  >
+    <img
+      alt=""
+      class="max-h-[82dvh] max-w-full rounded-lg object-contain shadow-2xl"
+      data-lightbox-image
+    />
+    <p
+      class="rounded-full bg-surface-container-high px-4 py-1.5 text-sm font-medium"
+      data-lightbox-caption
+    ></p>
+  </div>
+
+  <IconButton
+    icon="material-symbols:close-rounded"
+    label="nav.close"
+    variant="tonal"
+    class="absolute top-4 right-4"
+    data-lightbox-close
+  />
+  <IconButton
+    icon="material-symbols:chevron-left-rounded"
+    label="lightbox.previous"
+    variant="tonal"
+    class="absolute top-1/2 left-2 -translate-y-1/2 sm:left-4"
+    data-lightbox-step="-1"
+  />
+  <IconButton
+    icon="material-symbols:chevron-right-rounded"
+    label="lightbox.next"
+    variant="tonal"
+    class="absolute top-1/2 right-2 -translate-y-1/2 sm:right-4"
+    data-lightbox-step="1"
+  />
+</dialog>
+
+<style>
+  .lightbox::backdrop {
+    background: color-mix(in oklab, var(--color-scrim) 85%, transparent);
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('dialog[data-lightbox]');
+  const image = dialog?.querySelector<HTMLImageElement>('[data-lightbox-image]');
+  const caption = dialog?.querySelector<HTMLElement>('[data-lightbox-caption]');
+  const steps = dialog?.querySelectorAll<HTMLElement>('[data-lightbox-step]') ?? [];
+
+  if (dialog && image && caption) {
+    const items = [...document.querySelectorAll<HTMLAnchorElement>('a[data-lightbox-item]')];
+    let group: HTMLAnchorElement[] = [];
+    let index = 0;
+
+    const show = (next: number) => {
+      index = (next + group.length) % group.length;
+      const item = group[index];
+      if (!item) return;
+      image.src = item.href;
+      image.alt = item.querySelector('img')?.alt ?? '';
+      const text = item.closest('figure')?.querySelector('figcaption');
+      caption.replaceChildren(...[...(text?.childNodes ?? [])].map((node) => node.cloneNode(true)));
+    };
+
+    for (const item of items) {
+      item.addEventListener('click', (event) => {
+        event.preventDefault();
+        group = items.filter((other) => other.dataset.lightboxItem === item.dataset.lightboxItem);
+        for (const step of steps) step.hidden = group.length < 2;
+        show(group.indexOf(item));
+        dialog.showModal();
+      });
+    }
+
+    for (const step of steps) {
+      step.addEventListener('click', () => show(index + Number(step.dataset.lightboxStep)));
+    }
+    dialog.querySelector('[data-lightbox-close]')?.addEventListener('click', () => dialog.close());
+
+    // Beside the image and its caption - the scrim
+    dialog.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      if (target === dialog || target.hasAttribute('data-lightbox-backdrop')) dialog.close();
+    });
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') show(index - 1);
+      else if (event.key === 'ArrowRight') show(index + 1);
+    });
+    dialog.addEventListener('close', () => image.removeAttribute('src'));
+  }
+</script>

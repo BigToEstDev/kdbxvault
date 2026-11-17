@@ -1,11 +1,25 @@
 ---
-import PagePlaceholder from '../components/sections/PagePlaceholder.astro';
+/**
+ * Screenshots: a section per platform - desktop (Windows), then Android (src/config/screenshots.ts); a click opens
+ * a shot large (the lightbox).
+ */
+import ScreenshotGallery from '../components/screenshots/ScreenshotGallery.astro';
+import PageHeader from '../components/sections/PageHeader.astro';
+import Container from '../components/ui/Container.astro';
+import Lightbox from '../components/ui/Lightbox.astro';
 import { navItem, ROUTES } from '../config/nav';
+import { SCREENSHOTS } from '../config/screenshots';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const { label, icon } = navItem(ROUTES.screenshots);
 ---
 
 <BaseLayout title={label}>
-  <PagePlaceholder title={label} icon={icon} />
+  <Container class="flex flex-col gap-12 pt-12 sm:pt-16">
+    <PageHeader title={label} icon={icon} />
+    {SCREENSHOTS.map((set) => (
+      <ScreenshotGallery set={set} />
+    ))}
+  </Container>
+  <Lightbox />
 </BaseLayout>
