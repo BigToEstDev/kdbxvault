@@ -33,6 +33,14 @@ export default defineConfig({
         startsWith: 'https://t.me/',
         optional: true,
       }),
+      // Optional: the donation page on Boosty - without it the donations page shows «soon» instead of the button
+      PUBLIC_BOOSTY_URL: envField.string({
+        context: 'client',
+        access: 'public',
+        url: true,
+        startsWith: 'https://boosty.to/',
+        optional: true,
+      }),
       // Obtainium - updates of the APK from GitHub Releases: the link under the Android download
       PUBLIC_OBTAINIUM_URL: envField.string({
         context: 'client',

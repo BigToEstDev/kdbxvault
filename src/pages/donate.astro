@@ -1,11 +1,179 @@
 ---
-import PagePlaceholder from '../components/sections/PagePlaceholder.astro';
-import { navItem, ROUTES } from '../config/nav';
+/**
+ * Donations: a gold panel - the app is free, support helps it live on; the way to the donation page on Boosty (out
+ * of the site - the payment is there; no widgets of Boosty here) or «soon» while its address is not set (.env);
+ * then the ways to help without money - a star on GitHub, a word about the app, an issue, the Telegram group (only
+ * when its address is set); thanks at the end.
+ */
+import { Icon } from 'astro-icon/components';
+import PageHeader from '../components/sections/PageHeader.astro';
+import Section from '../components/sections/Section.astro';
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import Chip from '../components/ui/Chip.astro';
+import CoffeeBadge from '../components/ui/CoffeeBadge.astro';
+import Container from '../components/ui/Container.astro';
+import IconBadge, { type IconTone } from '../components/ui/IconBadge.astro';
+import { ICONS, navItem, ROUTES } from '../config/nav';
+import { SITE } from '../config/site';
+import type { MessageKey } from '../i18n/locales';
+import T from '../i18n/T.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const { label, icon } = navItem(ROUTES.donate);
+
+interface Way {
+  icon: string;
+  tone: IconTone;
+  title: MessageKey;
+  text: MessageKey;
+  /** A link out of the site - with its label; none - the card is only a hint. */
+  action?: { href: string; label: MessageKey; icon: string };
+}
+
+const WAYS: readonly Way[] = [
+  {
+    icon: 'material-symbols:star-outline-rounded',
+    tone: 'tertiary',
+    title: 'donate.free.star.title',
+    text: 'donate.free.star.text',
+    action: { href: SITE.githubAppUrl, label: 'home.githubOpen', icon: ICONS.github },
+  },
+  {
+    icon: 'material-symbols:share-outline',
+    tone: 'primary',
+    title: 'donate.free.share.title',
+    text: 'donate.free.share.text',
+  },
+  {
+    icon: 'material-symbols:bug-report-outline-rounded',
+    tone: 'secondary',
+    title: 'donate.free.issues.title',
+    text: 'donate.free.issues.text',
+    action: {
+      href: SITE.issuesUrl,
+      label: 'home.open.issues.action',
+      icon: 'material-symbols:bug-report-outline-rounded',
+    },
+  },
+  ...(SITE.telegramUrl
+    ? [
+        {
+          icon: 'simple-icons:telegram',
+          tone: 'primary',
+          title: 'home.support.telegram.title',
+          text: 'home.support.telegram.text',
+          action: {
+            href: SITE.telegramUrl,
+            label: 'home.support.telegram.action',
+            icon: 'simple-icons:telegram',
+          },
+        } satisfies Way,
+      ]
+    : []),
+];
 ---
 
 <BaseLayout title={label}>
-  <PagePlaceholder title={label} icon={icon} />
+  <Container class="flex flex-col gap-12 pt-12 sm:pt-16">
+    <PageHeader title={label} icon={icon} />
+
+    <Card
+      class="relative flex flex-col items-center gap-6 overflow-hidden border-tertiary/40 bg-linear-to-br from-tertiary/25 via-surface-container-low/90 to-primary/15 py-12 text-center sm:py-16"
+      data-reveal="scale"
+    >
+      <div
+        class="pointer-events-none absolute -top-24 -left-24 size-72 rounded-full bg-tertiary/20 blur-3xl"
+        aria-hidden="true"
+      ></div>
+      <div
+        class="pointer-events-none absolute -right-24 -bottom-24 size-72 rounded-full bg-primary/15 blur-3xl"
+        aria-hidden="true"
+      ></div>
+
+      <CoffeeBadge class="relative" />
+      <h2 class="relative text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+        <T k="donate.title" />
+      </h2>
+      <p class="relative max-w-xl text-lg text-pretty text-on-surface-variant">
+        <T k="donate.text" />
+      </p>
+
+      {SITE.boostyUrl ? (
+        <Button
+          href={SITE.boostyUrl}
+          external
+          variant="accent"
+          icon="material-symbols:coffee-outline-rounded"
+          iconEnd={ICONS.external}
+          class="relative h-12 px-6 text-base"
+        >
+          <T k="donate.action" />
+        </Button>
+      ) : (
+        <Chip tone="tertiary" icon="material-symbols:schedule-outline-rounded" class="relative">
+          <T k="download.soon" />
+        </Chip>
+      )}
+
+      <p class="relative flex max-w-md items-start gap-2 text-left text-sm text-on-surface-variant">
+        <Icon
+          name="material-symbols:lock-outline"
+          class="mt-0.5 size-4 shrink-0"
+          aria-hidden="true"
+        />
+        <T k="donate.payment" />
+      </p>
+    </Card>
+  </Container>
+
+  <Section eyebrow="donate.free.eyebrow" title="donate.free.title" text="donate.free.text">
+    <ul class="grid gap-4 sm:grid-cols-2">
+      {WAYS.map(({ icon, tone, title, text, action }, i) => (
+        <Card
+          as="li"
+          interactive
+          class="flex flex-col gap-4"
+          data-reveal
+          style={`--reveal-delay: ${i * 80}ms`}
+        >
+          <IconBadge icon={icon} tone={tone} />
+          <div class="flex flex-1 flex-col gap-1">
+            <h3 class="text-lg font-semibold">
+              <T k={title} />
+            </h3>
+            <p class="text-sm text-pretty text-on-surface-variant">
+              <T k={text} />
+            </p>
+          </div>
+          {action && (
+            <Button
+              href={action.href}
+              external
+              variant="tonal"
+              icon={action.icon}
+              iconEnd={ICONS.external}
+              class="self-start"
+            >
+              <T k={action.label} />
+            </Button>
+          )}
+        </Card>
+      ))}
+    </ul>
+  </Section>
+
+  <Container class="pt-20 sm:pt-24">
+    <p
+      class="flex items-center justify-center gap-2 text-center text-lg font-medium text-on-surface-variant"
+      data-reveal
+    >
+      <Icon
+        name="material-symbols:favorite-rounded"
+        class="size-5 shrink-0 text-tertiary"
+        aria-hidden="true"
+      />
+      <T k="donate.thanks" />
+    </p>
+  </Container>
 </BaseLayout>

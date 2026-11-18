@@ -40,6 +40,7 @@ jobs:
           PUBLIC_GITHUB_APP_URL: ${{ vars.PUBLIC_GITHUB_APP_URL }}
           PUBLIC_GITHUB_CORE_URL: ${{ vars.PUBLIC_GITHUB_CORE_URL }}
           PUBLIC_OBTAINIUM_URL: ${{ vars.PUBLIC_OBTAINIUM_URL }}
+          PUBLIC_BOOSTY_URL: ${{ vars.PUBLIC_BOOSTY_URL }}
           GH_API_URL: ${{ vars.GH_API_URL }}
           GH_RAW_URL: ${{ vars.GH_RAW_URL }}
           # The token of the run - the GitHub API without the limit of 60 requests an hour

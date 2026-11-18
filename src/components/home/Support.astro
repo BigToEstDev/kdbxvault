@@ -10,6 +10,7 @@ import T from '../../i18n/T.astro';
 import Button from '../ui/Button.astro';
 import Card from '../ui/Card.astro';
 import Chip from '../ui/Chip.astro';
+import CoffeeBadge from '../ui/CoffeeBadge.astro';
 import Section from '../sections/Section.astro';
 
 /** What the donations are for - brands, shown as they are. */
@@ -26,9 +27,7 @@ const LICENSES = [
     class="relative flex flex-col items-center gap-6 overflow-hidden border-tertiary/40 bg-linear-to-br from-tertiary/25 via-surface-container-low/90 to-primary/15 text-center"
     data-reveal="scale"
   >
-    <span class="coffee inline-flex size-20 items-center justify-center rounded-full bg-tertiary text-on-tertiary shadow-lg">
-      <Icon name="material-symbols:coffee-outline-rounded" class="size-10" aria-hidden="true" />
-    </span>
+    <CoffeeBadge />
     <p class="max-w-xl text-lg text-pretty text-on-surface-variant">
       <T k="home.support.text" />
     </p>
@@ -75,21 +74,3 @@ const LICENSES = [
     </Card>
   )}
 </Section>
-
-<style>
-  @media (prefers-reduced-motion: no-preference) {
-    .coffee {
-      animation: steam 4s ease-in-out infinite;
-    }
-
-    @keyframes steam {
-      0%,
-      100% {
-        box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-tertiary) 40%, transparent);
-      }
-      50% {
-        box-shadow: 0 0 0 14px color-mix(in oklab, var(--color-tertiary) 0%, transparent);
-      }
-    }
-  }
-</style>
