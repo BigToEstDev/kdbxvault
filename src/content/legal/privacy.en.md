@@ -1,4 +1,4 @@
-Last updated: 17 November 2026
+Last updated: 18 November 2026
 
 KDBX Vault is an offline password manager. This policy covers the app (Android and desktop) and this website.
 
@@ -22,6 +22,8 @@ KDBX Vault is an offline password manager. This policy covers the app (Android a
 - GitHub, as the host, may log technical data of requests, such as IP addresses — see the
   [GitHub Privacy Statement](https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement).
 - Downloads come from GitHub Releases; we see only the total number of downloads.
+- Donations go through Boosty: the button on the donations page leads to their site, the payment happens there under
+  their terms. We never get your card details.
 
 ## Contact
 

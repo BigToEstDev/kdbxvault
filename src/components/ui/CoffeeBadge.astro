@@ -1,0 +1,40 @@
+---
+/**
+ * The mark of the donations: a cup of coffee in a gold circle with a slow «steam» - a ring that comes out of it
+ * (only when motion is welcome).
+ */
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<span
+  class:list={[
+    'coffee inline-flex size-20 shrink-0 items-center justify-center rounded-full bg-tertiary text-on-tertiary shadow-lg',
+    className,
+  ]}
+>
+  <Icon name="material-symbols:coffee-outline-rounded" class="size-10" aria-hidden="true" />
+</span>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .coffee {
+      animation: steam 4s ease-in-out infinite;
+    }
+
+    @keyframes steam {
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-tertiary) 40%, transparent);
+      }
+      50% {
+        box-shadow: 0 0 0 14px color-mix(in oklab, var(--color-tertiary) 0%, transparent);
+      }
+    }
+  }
+</style>

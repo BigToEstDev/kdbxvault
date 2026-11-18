@@ -5,9 +5,6 @@
   "a11y": {
     "skip": "Skip to content"
   },
-  "placeholder": {
-    "soon": "This section is coming soon."
-  },
   "home": {
     "hero": {
       "tagline": "Your passwords. Your file. Your devices.",
@@ -253,5 +250,29 @@
   "lightbox": {
     "previous": "Previous",
     "next": "Next"
+  },
+  "donate": {
+    "title": "Support KDBX Vault",
+    "text": "The app is free: no ads, no subscriptions, no paid features - and it stays that way. If it is useful to you, support its development: it helps the project live on and grow.",
+    "action": "Support on Boosty",
+    "payment": "Payment goes through Boosty - by Visa, Mastercard or Mir card. Only Boosty sees your card details, we never get them.",
+    "thanks": "Thank you for your support!",
+    "free": {
+      "eyebrow": "No money",
+      "title": "Help without money",
+      "text": "The project grows when people know about it and use it.",
+      "star": {
+        "title": "A star on GitHub",
+        "text": "A couple of seconds - and others find the project more easily."
+      },
+      "share": {
+        "title": "Tell others about the app",
+        "text": "Friends, colleagues, your blog or social media - so people who need it learn about it."
+      },
+      "issues": {
+        "title": "Bugs and ideas",
+        "text": "Found a bug or know what to improve? Write in Issues - every report makes the app better."
+      }
+    }
   }
 }
