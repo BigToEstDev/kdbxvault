@@ -21,14 +21,14 @@
       "float": {
         "locked": "Encrypted",
         "local": "Stays on device"
-      }
+      },
+      "downloads": "from GitHub Releases - no tracking"
     },
     "stats": {
       "title": "nothing extra",
       "subscriptions": "No subscriptions or payments",
       "accounts": "No sign-up or account",
-      "ads": "No ads or trackers",
-      "downloads": "from GitHub Releases - no tracking"
+      "ads": "No ads or trackers"
     },
     "privacy": {
       "eyebrow": "Privacy",

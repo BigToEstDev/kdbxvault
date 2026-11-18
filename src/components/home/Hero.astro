@@ -1,15 +1,20 @@
 ---
 /**
- * The first screen: facts as chips, the name, one line and the actions - «Download» (the panel below) and GitHub;
- * on the right - a drawing of the app.
+ * The first screen: facts as chips, the name, one line and the actions - GitHub and the way to the download panel
+ * below: a tile with the downloads of every release (GitHub Releases at build time), or, with none yet, a plain
+ * «Download» button; on the right - a drawing of the app.
  */
 import { GITHUB, ICONS, ROUTES } from '../../config/nav';
 import { SITE } from '../../config/site';
+import { formatPlural } from '../../i18n/format';
 import type { MessageKey } from '../../i18n/locales';
+import Localized from '../../i18n/Localized.astro';
 import T from '../../i18n/T.astro';
+import { getReleases } from '../../lib/releases/releases';
 import Button from '../ui/Button.astro';
 import Chip, { type ChipTone } from '../ui/Chip.astro';
 import Container from '../ui/Container.astro';
+import IconBadge from '../ui/IconBadge.astro';
 import AppMockup from './visuals/AppMockup.astro';
 
 const CHIPS: readonly { label: MessageKey; icon: string; tone: ChipTone }[] = [
@@ -22,6 +27,8 @@ const CHIPS: readonly { label: MessageKey; icon: string; tone: ChipTone }[] = [
     tone: 'neutral',
   },
 ];
+
+const { downloads } = await getReleases();
 ---
 
 <section class="relative pt-10 sm:pt-16 lg:pt-20">
@@ -61,10 +68,30 @@ const CHIPS: readonly { label: MessageKey; icon: string; tone: ChipTone }[] = [
         <T k="home.hero.text" />
       </p>
 
-      <div class="flex flex-wrap gap-3 pt-2" data-reveal style="--reveal-delay: 280ms">
-        <Button href={ROUTES.download} icon={ICONS.download} class="h-12 px-6 text-base">
-          <T k="nav.download" />
-        </Button>
+      <div class="flex flex-wrap items-center gap-3 pt-2" data-reveal style="--reveal-delay: 280ms">
+        {downloads > 0 ? (
+          <a
+            href={ROUTES.download}
+            class="flex items-center gap-3 rounded-lg bg-surface-container/70 px-4 py-3 transition-colors duration-150 hover:bg-surface-container focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            <IconBadge icon={ICONS.download} tone="primary" solid size="lg" />
+            <span class="flex flex-col">
+              <span class="sr-only">
+                <T k="nav.download" />
+              </span>
+              <span class="text-xl font-semibold tabular-nums">
+                <Localized format={(locale) => formatPlural(locale, 'download.count', downloads)} />
+              </span>
+              <span class="text-sm text-on-surface-variant">
+                <T k="home.hero.downloads" />
+              </span>
+            </span>
+          </a>
+        ) : (
+          <Button href={ROUTES.download} icon={ICONS.download} class="h-12 px-6 text-base">
+            <T k="nav.download" />
+          </Button>
+        )}
         <Button
           href={GITHUB.href}
           external
